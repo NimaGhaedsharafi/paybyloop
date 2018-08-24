@@ -74,4 +74,30 @@ class WalletTest extends FeatureCase
         $this->assertEquals(0, $wallet->balance($this->user));
         $this->assertEquals(0, $wallet->balance($this->vendor));
     }
+
+    /**
+     * @test
+     */
+    public function pay_fails_when_vendor_does_not_exist()
+    {
+        $this->impersonate();
+
+        $this->json('POST', route('v1.user.wallet.pay'), [
+            'vendor_id' => 'gibberish',
+            'amount' => 2000
+        ])->assertStatus(404);
+    }
+
+    /**
+     * @test
+     */
+    public function payment_fails_when_vendor_id_or_amount_is_missing()
+    {
+        $this->impersonate();
+
+        $this->json('POST', route('v1.user.wallet.pay'), [
+            'vendor_id' => 'gibberish',
+            'amount' => 2000
+        ])->assertStatus(404);
+    }
 }

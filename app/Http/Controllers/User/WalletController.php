@@ -22,6 +22,11 @@ class WalletController extends Controller
 
     public function pay(Request $request)
     {
+        $this->validate($request, [
+            'amount' => 'required|numeric',
+            'vendor_id' => 'required'
+        ]);
+
         /** @var User $user */
         $user = Auth::user();
         /** @var Vendor $vendor */
