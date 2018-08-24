@@ -7,6 +7,7 @@ Route::group(['as' => 'v1.', 'prefix' => 'v1'], function () {
         });
         Route::group(['prefix' => 'vendor', 'as' => 'vendor.'], function () {
             Route::get('/', ['as' => 'list', 'uses' => 'VendorController@index']);
+            Route::get('{vendor_id}/show', ['as' => 'show', 'uses' => 'VendorController@show']);
         });
         Route::group(['prefix' => 'wallet', 'as' => 'wallet.'], function () {
             Route::get('/', ['as' => 'list', 'uses' => 'WalletController@index']);
