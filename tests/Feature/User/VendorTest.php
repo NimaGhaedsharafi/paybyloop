@@ -23,4 +23,22 @@ class VendorTest extends FeatureCase
             ->assertOk()
             ->assertJson(Vendor::all()->toArray());
     }
+
+    /**
+     * @test
+     */
+    public function get_vendor_info()
+    {
+        $vendor = factory(Vendor::class)->create();
+
+        $this->json('GET', route('v1.user.vendor.show'), ['vendor_i d' => $vendor->vendor_id])
+            ->assertOk()
+            ->assertJsonStructure([
+                'name',
+                'photo',
+                'address',
+                'coordinate',
+                'vendor_id',
+            ]);
+    }
 }
