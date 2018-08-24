@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property User $user
  * @property int $id
+ * @property int $user_id
+ * @property int $user_type
  * @property int $balance
  * @property int $type
  * @property int $creditor
@@ -22,6 +24,9 @@ class Wallet extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        if ($this->user_type == 1) {
+            return $this->belongsTo(User::class);
+        }
+        return $this->belongsTo(Vendor::class);
     }
 }
