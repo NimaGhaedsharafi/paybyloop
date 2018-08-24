@@ -17,8 +17,10 @@ class VendorTest extends TestCase
      */
     public function get_list_of_vendors_works()
     {
+        factory(Vendor::class, 5)->create();
+
         $this->json('GET', route('v1.user.vendor.list'))
             ->assertOk()
-            ->assertJson(Vendor::all());
+            ->assertJson(Vendor::all()->toArray());
     }
 }
