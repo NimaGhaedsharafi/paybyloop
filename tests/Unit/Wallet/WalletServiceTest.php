@@ -22,7 +22,10 @@ class WalletServiceTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function testBalance()
+    /**
+     * @test
+     */
+    public function balance_should_be_zero_for_just_registered_user()
     {
         $user = factory(User::class)->create();
 
@@ -31,7 +34,10 @@ class WalletServiceTest extends TestCase
         $this->assertEquals(0, $walletService->balance($user));
     }
 
-    public function testCreditor()
+    /**
+     * @test
+     */
+    public function creditor_should_increase_balance()
     {
         /** @var User $user */
         $user = factory(User::class)->create();
@@ -48,6 +54,7 @@ class WalletServiceTest extends TestCase
             'user_type' => $user->getType(),
             'type' => 1,
             'creditor' => 1000,
+            'balance' => 1000,
             'debtor' => 0,
             'description' => ""
         ]);
