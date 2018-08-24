@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Services\Wallet\Payable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -18,7 +19,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  */
-class User extends Authenticatable
+class User extends Authenticatable implements Payable
 {
     use Notifiable;
 
@@ -28,7 +29,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'username', 'cellphone', 'email', 'password', 'cellphone_verified', 'email_verified'
     ];
 
     /**
@@ -47,5 +48,21 @@ class User extends Authenticatable
     public function wallet()
     {
         return $this->hasMany(Wallet::class);
+    }
+
+    /**
+     * @return integer
+     */
+    public function getType()
+    {
+        return 1;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 }
