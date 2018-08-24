@@ -33,4 +33,24 @@ class WalletTest extends FeatureCase
             ->assertOk()
             ->assertJsonCount(5);
     }
+
+    /**
+     * @test
+     */
+    public function pay_to_a_vendor_should_work()
+    {
+        $this->impersonate();
+        $this->createVendor();
+
+        $wallet = new WalletService();
+        $wallet->creditor($this->user, 5000, 1, "");
+
+        $this->json('POST', route('v1.user.wallet.pay'), [
+            'vendor_id' => $this->vendor->vendor_id,
+            'amount' => 2000
+        ])->assertOk();
+
+        $this->assertEquals(3000, $wallet->balance($this->user));
+        $this->assertEquals(2000, $wallet->balance($this->vendor));
+    }
 }
