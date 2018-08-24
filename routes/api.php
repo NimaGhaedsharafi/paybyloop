@@ -11,6 +11,7 @@ Route::group(['as' => 'v1.', 'prefix' => 'v1'], function () {
         });
         Route::group(['prefix' => 'wallet', 'as' => 'wallet.'], function () {
             Route::get('/', ['as' => 'list', 'uses' => 'WalletController@index']);
+            Route::post('pay', ['as' => 'pay', 'uses' => 'WalletController@pay']);
         });
     });
 });
