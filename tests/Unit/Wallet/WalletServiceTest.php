@@ -8,6 +8,7 @@
 
 namespace Tests\Unit\Wallet;
 
+use App\Services\Wallet\Exception\InsufficientCredit;
 use App\Services\Wallet\WalletService;
 use App\User;
 use App\Wallet;
