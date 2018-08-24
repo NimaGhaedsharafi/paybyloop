@@ -7,6 +7,16 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * @property Wallet[] $wallet
+ * @property int $id
+ * @property string $name
+ * @property string $username
+ * @property string $cellphone
+ * @property string $email
+ * @property bool $cellphone_verified
+ * @property bool $email_verified
+ * @property string $remember_token
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
  */
 class User extends Authenticatable
 {
