@@ -35,7 +35,7 @@ class VendorTest extends FeatureCase
     {
         $vendor = factory(Vendor::class)->create();
 
-        $this->json('GET', route('v1.user.vendor.show', ['vendor_i d' => $vendor->vendor_id]))
+        $this->json('GET', route('v1.user.vendor.show', ['vendor_id' => $vendor->vendor_id]))
             ->assertOk()
             ->assertJsonStructure([
                 'name',
