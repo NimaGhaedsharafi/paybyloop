@@ -11,8 +11,11 @@ use Illuminate\Support\Facades\Auth;
  */
 class ProfileController extends Controller
 {
+    /**
+     * @return \Illuminate\Http\Response
+     */
     public function show()
     {
-        return response()->json(Auth::user());
+        return response(Auth::user());
     }
 }
