@@ -9,6 +9,10 @@
 namespace App\Exceptions;
 
 
+/**
+ * Class ApiException
+ * @package App\Exceptions
+ */
 class ApiException extends \RuntimeException
 {
     protected $code;
@@ -25,5 +29,16 @@ class ApiException extends \RuntimeException
         $this->code = $code;
         $this->message = $message;
         $this->httpCode = $httpCode;
+    }
+
+    /**
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
+    public function render()
+    {
+        return response([
+            'code' => $this->getCode(),
+            'message' => $this->getMessage()
+        ], $this->httpCode);
     }
 }
