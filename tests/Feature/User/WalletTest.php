@@ -2,8 +2,10 @@
 
 namespace Tests\Feature\User;
 
+use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 /**
@@ -20,6 +22,9 @@ class WalletTest extends TestCase
      */
     public function get_list_wallet_transaction()
     {
+        $user = factory(User::class)->create();
+        Auth::login($user);
+        
         $this->json('GET', route('v1.user.wallet.list'))
             ->assertOk()
             ->assertJson([]);
