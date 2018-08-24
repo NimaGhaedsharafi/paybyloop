@@ -53,4 +53,25 @@ class WalletTest extends FeatureCase
         $this->assertEquals(3000, $wallet->balance($this->user));
         $this->assertEquals(2000, $wallet->balance($this->vendor));
     }
+
+    /**
+     * @test
+     */
+    public function pay_fails_when_user_has_not_sufficient_credit()
+    {
+        $this->impersonate();
+        $this->createVendor();
+
+        $wallet = new WalletService();
+
+        $this->json('POST', route('v1.user.wallet.pay'), [
+            'vendor_id' => $this->vendor->vendor_id,
+            'amount' => 2000
+        ])
+            ->assertStatus(400)
+            ->assertJsonStructure(['status', 'message']);
+
+        $this->assertEquals(0, $wallet->balance($this->user));
+        $this->assertEquals(0, $wallet->balance($this->vendor));
+    }
 }
