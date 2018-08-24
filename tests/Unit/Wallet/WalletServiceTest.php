@@ -103,4 +103,31 @@ class WalletServiceTest extends TestCase
             'description' => ""
         ]);
     }
+
+    /**
+     * @test
+     */
+    public function debtor_should_throw_exception_when_credit_is_insufficient()
+    {
+        /** @var User $user */
+        $user = factory(User::class)->create();
+
+        /** @var WalletService $walletService */
+        $walletService = new WalletService();
+
+        $this->expectException(InsufficientCredit::class);
+        $walletService->debtor($user, 1000, 1, "");
+
+        $this->assertDatabaseMissing((new Wallet())->getTable(), [
+            'user_id' => $user->getId(),
+            'user_type' => $user->getType(),
+            'type' => 1,
+            'creditor' => 0,
+            'balance' => 0,
+            'debtor' => 1000,
+            'description' => ""
+        ]);
+    }
+
+
 }
