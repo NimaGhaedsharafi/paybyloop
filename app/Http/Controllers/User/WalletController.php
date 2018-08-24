@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Exceptions\ApiException;
+use App\Services\Wallet\Exception\InsufficientCredit;
 use App\Services\Wallet\WalletService;
 use App\User;
 use App\Vendor;
@@ -27,11 +29,16 @@ class WalletController extends Controller
 
         $amount = $request->input('amount');
 
-        DB::transaction(function () use ($amount, $user, $vendor) {
-            /** @var WalletService $wallet */
-            $wallet = new WalletService();
-            $wallet->debtor($user, $amount, 1, "Pay to a vendor");
-            $wallet->creditor($vendor, $amount, 2, "Pay be a customer");
-        });
+        try {
+
+            DB::transaction(function () use ($amount, $user, $vendor) {
+                /** @var WalletService $wallet */
+                $wallet = new WalletService();
+                $wallet->debtor($user, $amount, 1, "Pay to a vendor");
+                $wallet->creditor($vendor, $amount, 2, "Pay be a customer");
+            });
+        } catch (InsufficientCredit $exception) {
+            throw new ApiException(1001, 'credit is insufficient');
+        }
     }
 }
