@@ -7,6 +7,10 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Tests\Feature\FeatureCase;
 
+/**
+ * Class VendorTest
+ * @package Tests\Feature\User
+ */
 class VendorTest extends FeatureCase
 {
     use WithoutMiddleware;
