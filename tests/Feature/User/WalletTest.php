@@ -15,6 +15,9 @@ class WalletTest extends TestCase
     use WithoutMiddleware;
     use DatabaseTransactions;
 
+    /**
+     * @test
+     */
     public function get_list_wallet_transaction()
     {
         $this->json('GET', route('v1.user.wallet.list'))
