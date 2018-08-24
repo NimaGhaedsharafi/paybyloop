@@ -11,9 +11,11 @@ class ProfileTest extends FeatureCase
      */
     public function get_user_profile_works()
     {
+        $this->impersonate();
+
         $this->json('GET', route('v1.user.profile.show'))
             ->assertOk()
-            ->assertJsonFragment([
+            ->assertJsonStructure([
                 'name',
                 'cellphone',
                 'email',
