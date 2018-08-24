@@ -52,4 +52,23 @@ class WalletServiceTest extends TestCase
             'description' => ""
         ]);
     }
+
+
+    /**
+     * @test
+     */
+    public function creditor_should_add_up()
+    {
+        /** @var User $user */
+        $user = factory(User::class)->create();
+
+        /** @var WalletService $walletService */
+        $walletService = new WalletService();
+        $this->assertEquals(0, $walletService->balance($user));
+
+        $walletService->creditor($user, 1000, 1, "");
+        $walletService->creditor($user, 1000, 1, "");
+
+        $this->assertEquals(2000, $walletService->balance($user));
+    }
 }
