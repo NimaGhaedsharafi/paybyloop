@@ -38,7 +38,7 @@ class User extends Authenticatable implements Payable
      * @var array
      */
     protected $hidden = [
-        'id', 'password', 'remember_token',
+        'id', 'password', 'remember_token', 'created_at', 'updated_at', 'cellphone_verified', 'email_verified'
     ];
 
 
