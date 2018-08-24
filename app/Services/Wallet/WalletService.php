@@ -32,6 +32,7 @@ class WalletService
 
         return $lastTransaction->balance ?? 0;
     }
+
     /**
      * Increase wallet credit
      * @param Payable $user
@@ -43,8 +44,8 @@ class WalletService
     public function creditor(Payable $user, int $amount, $type, string $description)
     {
         $balance = $this->balance($user);
-        $wallet = new Wallet();
 
+        $wallet = new Wallet();
         $wallet->user_id = $user->getId();
         $wallet->user_type = $user->getType();
         $wallet->creditor = $amount;
@@ -56,6 +57,7 @@ class WalletService
 
         return $balance;
     }
+
     /**
      * Decrease wallet credit
      * @param Payable $user
@@ -67,13 +69,13 @@ class WalletService
     public function debtor(Payable $user, int $amount, $type, string $description)
     {
         $balance = $this->balance($user);
-        $wallet = new Wallet();
 
         // is it feasible to deduct this amount?
         if ($balance < $amount) {
             throw new InsufficientCredit();
         }
 
+        $wallet = new Wallet();
         $wallet->user_id = $user->getId();
         $wallet->user_type = $user->getType();
         $wallet->creditor = 0;
@@ -85,4 +87,5 @@ class WalletService
 
         return $balance;
     }
+    
 }
