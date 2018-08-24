@@ -15,13 +15,16 @@ class CreateWalletsTable extends Migration
     {
         Schema::create('wallets', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id')->index();
+            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('user_type');
             $table->integer('type');
             $table->integer('creditor')->default(0);
             $table->integer('debtor')->default(0);
             $table->integer('balance')->default(0);
             $table->string('description');
             $table->timestamps();
+
+            $table->index(['user_id', 'user_type']);
         });
     }
 
