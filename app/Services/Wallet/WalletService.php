@@ -8,6 +8,7 @@
 
 namespace App\Services\Wallet;
 
+use App\Services\Wallet\Exception\InsufficientCredit;
 use App\Wallet;
 
 
@@ -67,6 +68,11 @@ class WalletService
     {
         $balance = $this->balance($user);
         $wallet = new Wallet();
+
+        // is it feasible to deduct this amount?
+        if ($balance < $amount) {
+            throw new InsufficientCredit();
+        }
 
         $wallet->user_id = $user->getId();
         $wallet->user_type = $user->getType();
