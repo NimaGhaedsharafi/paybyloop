@@ -11,4 +11,9 @@ class VendorController extends Controller
     {
         return Vendor::all();
     }
+
+    public function show($vendorId)
+    {
+        return Vendor::where('vendor_id', $vendorId)->firstOrFail();
+    }
 }
