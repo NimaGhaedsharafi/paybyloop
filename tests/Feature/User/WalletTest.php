@@ -69,7 +69,7 @@ class WalletTest extends FeatureCase
             'amount' => 2000
         ])
             ->assertStatus(400)
-            ->assertJsonStructure(['status', 'message']);
+            ->assertJsonStructure(['code', 'message']);
 
         $this->assertEquals(0, $wallet->balance($this->user));
         $this->assertEquals(0, $wallet->balance($this->vendor));
