@@ -55,4 +55,28 @@ class WalletService
 
         return $balance;
     }
+    /**
+     * Decrease wallet credit
+     * @param Payable $user
+     * @param int $amount
+     * @param $type
+     * @param string $description
+     * @return int
+     */
+    public function debtor(Payable $user, int $amount, $type, string $description)
+    {
+        $balance = $this->balance($user);
+        $wallet = new Wallet();
+
+        $wallet->user_id = $user->getId();
+        $wallet->user_type = $user->getType();
+        $wallet->creditor = 0;
+        $wallet->debtor = $amount;
+        $wallet->type = $type;
+        $wallet->description = $description;
+        $wallet->balance = $balance - $amount;
+        $wallet->save();
+
+        return $balance;
+    }
 }

@@ -60,7 +60,6 @@ class WalletServiceTest extends TestCase
         ]);
     }
 
-
     /**
      * @test
      */
@@ -77,5 +76,31 @@ class WalletServiceTest extends TestCase
         $walletService->creditor($user, 1000, 1, "");
 
         $this->assertEquals(2000, $walletService->balance($user));
+    }
+
+    /**
+     * @test
+     */
+    public function debtor_should_decrease_balance()
+    {
+        /** @var User $user */
+        $user = factory(User::class)->create();
+
+        /** @var WalletService $walletService */
+        $walletService = new WalletService();
+        $walletService->creditor($user, 1000, 1, "");
+        $this->assertEquals(1000, $walletService->balance($user));
+
+        $walletService->debtor($user, 1000, 1, "");
+
+        $this->assertDatabaseHas((new Wallet())->getTable(), [
+            'user_id' => $user->getId(),
+            'user_type' => $user->getType(),
+            'type' => 1,
+            'creditor' => 0,
+            'balance' => 0,
+            'debtor' => 1000,
+            'description' => ""
+        ]);
     }
 }
