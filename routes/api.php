@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['as' => 'v1.', 'prefix' => 'v1'], function () {
+Route::group(['as' => 'v1.', 'prefix' => 'v1', 'middleware' => 'jwt'], function () {
     Route::group(['prefix' => 'user', 'as' => 'user.', 'namespace' => 'User'], function () {
         Route::group(['prefix' => 'profile', 'as' => 'profile.'], function () {
             Route::get('/', ['as' => 'show', 'uses' => 'ProfileController@show']);
