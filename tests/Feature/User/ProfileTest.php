@@ -2,10 +2,14 @@
 
 namespace Tests\Feature\User;
 
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Tests\Feature\FeatureCase;
 
 class ProfileTest extends FeatureCase
 {
+    use DatabaseTransactions;
+    use WithoutMiddleware;
     /**
      * @test
      */
