@@ -100,4 +100,16 @@ class WalletTest extends FeatureCase
             'amount' => 2000
         ])->assertStatus(404);
     }
+
+    /**
+     * @test
+     */
+    public function get_current_balance()
+    {
+        $this->impersonate();
+
+        $this->json('get', route('v1.user.wallet.balance'))
+            ->assertStatus(200)
+            ->assertJson(['balance' => 0]);
+    }
 }

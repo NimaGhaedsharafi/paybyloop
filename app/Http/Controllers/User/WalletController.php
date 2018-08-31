@@ -46,4 +46,14 @@ class WalletController extends Controller
             throw new ApiException(1001, 'credit is insufficient');
         }
     }
+
+    /**
+     *
+     */
+    public function balance()
+    {
+        return response()->json([
+            'balance' => (new WalletService())->balance(Auth::user())
+        ]);
+    }
 }
