@@ -33,4 +33,26 @@ class VoucherTest extends TestCase
             'max_use_time' => $maxUseTime
         ]);
     }
+
+    /**
+     * @param integer|null $amount
+     * @param string|null $title
+     * @param Carbon|null $expiresIn
+     * @param string|null $code
+     * @param integer|null $maxUseTime
+     * @return string
+     */
+    private function createVoucher($amount = null, $title = null, $expiresIn = null, $code = null, $maxUseTime = null)
+    {
+        // fixture
+        $amount = $amount ?? rand(1, 10) * 1000;
+        $title = $title ?? 'my campaign';
+        $expiresIn = $expiresIn ?? Carbon::now()->addDay();
+        $code = $code ?? str_random(5);
+        $maxUseTime = $maxUseTime ?? rand(1, 10);
+
+        /** @var VoucherService $voucher */
+        $voucher = new VoucherService();
+        return $voucher->create($amount, $title, $expiresIn, $code, $maxUseTime);
+    }
 }
