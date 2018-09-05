@@ -17,7 +17,7 @@ class VoucherTest extends TestCase
         $amount =  rand(1, 10) * 1000;
         $title = 'my campaign';
         $expiresIn = Carbon::now()->addDay();
-        $code = null;
+        $code = str_random(5);
         $maxUseTime = rand(1, 10);
 
         /** @var VoucherService $voucher */
@@ -30,7 +30,7 @@ class VoucherTest extends TestCase
             'title' => $title,
             'expires_in' => $expiresIn,
             'code' => $code,
-            'maxUseTime' => $maxUseTime
+            'max_use_time' => $maxUseTime
         ]);
     }
 }
