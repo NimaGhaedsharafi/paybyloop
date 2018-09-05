@@ -22,9 +22,9 @@ class VoucherTest extends TestCase
 
         /** @var VoucherService $voucher */
         $voucher = new VoucherService();
+        $voucherCode = $voucher->create($amount, $title, $expiresIn, $code, $maxUseTime);
 
-        $voucher->create($amount, $title, $expiresIn, $code, $maxUseTime);
-
+        $this->assertSame($voucherCode, $code);
         $this->assertDatabaseHas('vouchers', [
             'amount' => $amount,
             'title' => $title,
