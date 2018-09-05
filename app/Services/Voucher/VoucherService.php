@@ -11,5 +11,8 @@ namespace App\Services\Voucher;
 
 class VoucherService
 {
-
+    public function create($amount, $title, $expiresIn, $code, $maxUseTime)
+    {
+        
+    }
 }
