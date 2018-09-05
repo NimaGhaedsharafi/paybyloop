@@ -4,9 +4,6 @@ namespace Tests\Unit;
 
 use Carbon\Carbon;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Services\VoucherService;
 
 class VoucherTest extends TestCase
 {
