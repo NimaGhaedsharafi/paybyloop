@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Services\Voucher\VoucherService;
 
 class VoucherTest extends TestCase
 {
