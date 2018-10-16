@@ -57,6 +57,25 @@ class VoucherTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function redeem_an_invalid_voucher_should_return_false()
+    {
+        $code = 'invalid';
+        $userId = 1;
+        /** @var VoucherService $voucherService */
+        $voucherService = new VoucherService();
+        $result = $voucherService->redeem($userId, $code);
+
+        $this->assertFalse($result);
+        $this->assertDatabaseHas('voucher_logs', [
+            'user_id' => $userId,
+            'code' => $code,
+            'applied_at' => null
+        ]);
+    }
+
+    /**
      * @param integer|null $amount
      * @param string|null $title
      * @param Carbon|null $expiresIn

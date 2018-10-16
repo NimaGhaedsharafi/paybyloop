@@ -42,8 +42,11 @@ class VoucherService
         $log->applied_at = null;
         $log->save();
 
-        event(new VoucherRedeemed($userId, $voucher->id));
+        if ($voucher === null) {
+            return false;
+        }
 
+        event(new VoucherRedeemed($userId, $voucher->id));
         return true;
     }
 }
