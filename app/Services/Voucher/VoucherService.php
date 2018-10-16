@@ -10,6 +10,7 @@ namespace App\Services\Voucher;
 
 
 use App\Voucher;
+use App\VoucherLog;
 
 class VoucherService
 {
@@ -32,6 +33,13 @@ class VoucherService
     {
         /** @var Voucher $voucher */
         $voucher = Voucher::where('code', $code)->first();
-        
+        /** @var VoucherLog $log */
+        $log = new VoucherLog();
+        $log->voucher_id = $voucher->id ?? 0;
+        $log->code = $code;
+        $log->user_id = $userId;
+        $log->applied_at = null;
+        $log->save();
+
     }
 }
