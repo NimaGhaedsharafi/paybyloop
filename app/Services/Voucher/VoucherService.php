@@ -12,6 +12,7 @@ namespace App\Services\Voucher;
 use App\Services\Voucher\Events\VoucherRedeemed;
 use App\Voucher;
 use App\VoucherLog;
+use Carbon\Carbon;
 
 class VoucherService
 {
@@ -39,13 +40,15 @@ class VoucherService
         $log->voucher_id = $voucher->id ?? 0;
         $log->code = $code;
         $log->user_id = $userId;
-        $log->applied_at = null;
-        $log->save();
 
         if ($voucher === null) {
+            $log->applied_at = null;
+            $log->save();
             return false;
         }
 
+        $log->applied_at = Carbon::now();
+        $log->save();
         event(new VoucherRedeemed($userId, $voucher->id));
         return true;
     }

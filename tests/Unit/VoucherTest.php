@@ -52,7 +52,7 @@ class VoucherTest extends TestCase
         $this->assertDatabaseHas('voucher_logs', [
             'user_id' => $userId,
             'code' => $code,
-            'applied_at' => null
+            'applied_at' => Carbon::now()
         ]);
     }
 
