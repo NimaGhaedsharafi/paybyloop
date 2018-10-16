@@ -49,7 +49,7 @@ class VoucherTest extends TestCase
         $voucherService = new VoucherService();
         $result = $voucherService->redeem($userId, $code);
 
-        $this->assertTrue($result);
+        $this->assertNotNull($result);
         $this->assertDatabaseHas('voucher_logs', [
             'user_id' => $userId,
             'code' => $code,
@@ -68,7 +68,7 @@ class VoucherTest extends TestCase
         $voucherService = new VoucherService();
         $result = $voucherService->redeem($userId, $code);
 
-        $this->assertFalse($result);
+        $this->assertNull($result);
         $this->assertDatabaseHas('voucher_logs', [
             'user_id' => $userId,
             'code' => $code,

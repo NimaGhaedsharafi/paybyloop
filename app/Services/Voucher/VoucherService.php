@@ -44,12 +44,12 @@ class VoucherService
         if ($voucher === null) {
             $log->applied_at = null;
             $log->save();
-            return false;
+            return null;
         }
 
         $log->applied_at = Carbon::now();
         $log->save();
         event(new VoucherRedeemed($userId, $voucher->id));
-        return true;
+        return $voucher;
     }
 }
