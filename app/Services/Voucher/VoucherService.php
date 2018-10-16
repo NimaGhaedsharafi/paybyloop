@@ -9,6 +9,7 @@
 namespace App\Services\Voucher;
 
 
+use App\Services\Voucher\Events\VoucherRedeemed;
 use App\Voucher;
 use App\VoucherLog;
 
@@ -40,6 +41,8 @@ class VoucherService
         $log->user_id = $userId;
         $log->applied_at = null;
         $log->save();
+
+        event(new VoucherRedeemed($userId, $voucher->id));
 
     }
 }
