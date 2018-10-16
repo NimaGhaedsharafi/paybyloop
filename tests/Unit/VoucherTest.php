@@ -47,10 +47,10 @@ class VoucherTest extends TestCase
         $voucherService = new VoucherService();
         $voucherService->redeem($userId, $code);
 
-        $this->assertDatabaseHas('voucher_log', [
+        $this->assertDatabaseHas('voucher_logs', [
             'user_id' => $userId,
-            'voucher' => $code,
-            'applied_at' => Carbon::now()
+            'code' => $code,
+            'applied_at' => null
         ]);
     }
 
