@@ -44,5 +44,6 @@ class VoucherService
 
         event(new VoucherRedeemed($userId, $voucher->id));
 
+        return true;
     }
 }

@@ -46,8 +46,9 @@ class VoucherTest extends TestCase
         $this->expectsEvents(VoucherRedeemed::class);
         /** @var VoucherService $voucherService */
         $voucherService = new VoucherService();
-        $voucherService->redeem($userId, $code);
+        $result = $voucherService->redeem($userId, $code);
 
+        $this->assertTrue($result);
         $this->assertDatabaseHas('voucher_logs', [
             'user_id' => $userId,
             'code' => $code,
