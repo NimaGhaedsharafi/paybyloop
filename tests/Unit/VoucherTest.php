@@ -37,6 +37,7 @@ class VoucherTest extends TestCase
 
     /**
      * @test
+     * @throws \Exception
      */
     public function redeem_voucher()
     {
