@@ -15,6 +15,7 @@ class CreateVoucherLogsTable extends Migration
     {
         Schema::create('voucher_logs', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('voucher_id')->default(0);
             $table->string('code');
             $table->unsignedInteger('user_id');
             $table->timestamp('applied_at')->nullable();
