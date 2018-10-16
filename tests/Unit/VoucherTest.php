@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Services\Voucher\Events\VoucherRedeemed;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Services\Voucher\VoucherService;
