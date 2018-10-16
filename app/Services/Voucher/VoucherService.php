@@ -27,4 +27,11 @@ class VoucherService
 
         return $voucher->code;
     }
+
+    public function redeem($userId, $code)
+    {
+        /** @var Voucher $voucher */
+        $voucher = Voucher::where('code', $code)->first();
+        
+    }
 }
