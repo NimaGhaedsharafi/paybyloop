@@ -35,6 +35,26 @@ class VoucherTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function redeem_voucher()
+    {
+        $code = $this->createVoucher(1000);
+        $userId = 1;
+
+        $this->expectsEvents(VoucherRedeemed::class);
+        /** @var VoucherService $voucherService */
+        $voucherService = new VoucherService();
+        $voucherService->redeem($userId, $code);
+
+        $this->assertDatabaseHas('voucher_log', [
+            'user_id' => $userId,
+            'voucher' => $code,
+            'applied_at' => Carbon::now()
+        ]);
+    }
+
+    /**
      * @param integer|null $amount
      * @param string|null $title
      * @param Carbon|null $expiresIn
