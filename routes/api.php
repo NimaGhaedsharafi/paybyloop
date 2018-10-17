@@ -14,5 +14,8 @@ Route::group(['as' => 'v1.', 'prefix' => 'v1', 'middleware' => 'jwt'], function 
             Route::post('pay', ['as' => 'pay', 'uses' => 'WalletController@pay']);
             Route::get('balance', ['as' => 'balance', 'uses' => 'WalletController@balance']);
         });
+        Route::group(['prefix' => 'promotion', 'as' => 'promotion.'], function () {
+            Route::post('redeem', ['as' => 'redeem', 'uses' => 'PromotionController@redeem']);
+        });
     });
 });

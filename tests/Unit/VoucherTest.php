@@ -4,11 +4,13 @@ namespace Tests\Unit;
 
 use App\Services\Voucher\Events\VoucherRedeemed;
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use App\Services\Voucher\VoucherService;
 
 class VoucherTest extends TestCase
 {
+    use DatabaseTransactions;
     /**
      * @test
      */
