@@ -55,7 +55,7 @@ class WalletService
         $wallet->balance = $balance + $amount;
         $wallet->save();
 
-        return $balance;
+        return $wallet->balance;
     }
 
     /**
@@ -85,7 +85,7 @@ class WalletService
         $wallet->balance = $balance - $amount;
         $wallet->save();
 
-        return $balance;
+        return $wallet->balance;
     }
     
 }
