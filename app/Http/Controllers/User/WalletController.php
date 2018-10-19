@@ -42,6 +42,9 @@ class WalletController extends Controller
                 $wallet->debtor($user, $amount, 1, "Pay to a vendor");
                 $wallet->creditor($vendor, $amount, 2, "Pay be a customer");
             });
+            return response()->json([
+                'status' => 'success'
+            ]);
         } catch (InsufficientCredit $exception) {
             throw new ApiException(1001, 'credit is insufficient');
         }
