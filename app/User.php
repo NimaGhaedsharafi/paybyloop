@@ -86,4 +86,14 @@ class User extends Authenticatable implements Payable, JWTSubject
     {
         return [];
     }
+
+    /**
+     * Get the name of the unique identifier for the user.
+     *
+     * @return string
+     */
+    public function getAuthIdentifierName()
+    {
+        return 'username';
+    }
 }
