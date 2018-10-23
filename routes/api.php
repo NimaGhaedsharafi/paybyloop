@@ -1,5 +1,13 @@
 <?php
 
+// Public
+Route::group(['as' => 'v1.', 'prefix' => 'v1'], function () {
+    Route::group(['prefix' => 'user', 'as' => 'user.', 'namespace' => 'User'], function () {
+        Route::post('config', ['as' => 'config', 'uses' => 'ProfileController@config']);
+    });
+});
+
+// Authenticated
 Route::group(['as' => 'v1.', 'prefix' => 'v1', 'middleware' => 'jwt'], function () {
     Route::group(['prefix' => 'user', 'as' => 'user.', 'namespace' => 'User'], function () {
         Route::group(['prefix' => 'profile', 'as' => 'profile.'], function () {
