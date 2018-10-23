@@ -35,4 +35,8 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'kavenegar' => [
+        'key' => env('KAVENEGAR_KEY'),
+        'sender' => env('KAVENEGAR_SENDER', '100065995')
+    ],
 ];
