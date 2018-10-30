@@ -91,4 +91,15 @@ class AuthController extends Controller
             'name' => $user->name ?? 'Loop'
         ]);
     }
+
+    public function otpLogin(Request $request)
+    {
+        $cellphone = $request->input('cellphone');
+        $code = Cache::get('otp:' . $cellphone);
+
+        /** @var User $user */
+        $user = User::where('cellphone', $cellphone)->first();
+
+        return $this->respondWithToken(auth()->login($user));
+    }
 }

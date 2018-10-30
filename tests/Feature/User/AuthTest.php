@@ -6,6 +6,7 @@ use App\Services\Notification\SmsService;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Support\Facades\Cache;
 use Prophecy\Argument;
 use Tests\Feature\FeatureCase;
 
@@ -51,4 +52,34 @@ class AuthTest extends FeatureCase
             'name' => 'Loop'
         ]);
     }
+
+    /**
+     * @test
+     */
+    public function registered_user_be_should_logged_in_once_enters_correct_pin()
+    {
+        /** @var User $user */
+        $user = factory(User::class)->create();
+
+        $smsService = $this->prophesize(SmsService::class);
+        $smsService->send($user->cellphone, Argument::any());
+        app()->instance(SmsService::class, $smsService);
+
+        $this->json('POST', route('v1.user.otp'), [
+            'cellphone' => $user->cellphone,
+        ])->assertOk();
+
+
+        $code = Cache::get('otp:' . $user->cellphone);
+
+        $this->json('POST', route('v1.user.otp.login'), [
+            'cellphone' => $user->cellphone,
+            'code' => $code,
+        ])->assertOk()->json([
+            'access_token',
+            'token_type',
+            'expires_in'
+        ]);
+    }
+
 }

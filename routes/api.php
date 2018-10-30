@@ -5,6 +5,7 @@ Route::group(['as' => 'v1.', 'prefix' => 'v1'], function () {
     Route::group(['prefix' => 'user', 'as' => 'user.', 'namespace' => 'User'], function () {
         Route::post('config', ['as' => 'config', 'uses' => 'ProfileController@config']);
         Route::post('otp', ['as' => 'otp', 'uses' => 'AuthController@otp']);
+        Route::post('otp/login', ['as' => 'otp.login', 'uses' => 'AuthController@otpLogin']);
     });
 });
 
