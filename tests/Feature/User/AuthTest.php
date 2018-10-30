@@ -99,4 +99,24 @@ class AuthTest extends FeatureCase
             'message',
         ]);
     }
+
+    /**
+     * @test
+     */
+    public function login_needs_two_parameters()
+    {
+        $this->json('POST', route('v1.user.otp.login'), [
+            'code' => '12345',
+        ])->assertStatus(422);
+
+
+        $this->json('POST', route('v1.user.otp.login'), [
+            'cellphone' => '+989025813222',
+        ])->assertStatus(422);
+
+        $this->json('POST', route('v1.user.otp.login'), [
+            'cellphone' => '+989025813222',
+            'code' => '123451',
+        ])->assertStatus(422);
+    }
 }

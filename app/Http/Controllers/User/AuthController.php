@@ -96,6 +96,11 @@ class AuthController extends Controller
 
     public function otpLogin(Request $request)
     {
+        $this->validate($request, [
+            'code' => 'required|size:5',
+            'cellphone' => 'required'
+        ]);
+
         $cellphone = $request->input('cellphone');
         $code = Cache::get('otp:' . $cellphone, '');
 
