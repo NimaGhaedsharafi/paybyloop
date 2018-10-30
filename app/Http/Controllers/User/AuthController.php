@@ -69,15 +69,21 @@ class AuthController extends Controller
      */
     public function otp(Request $request)
     {
-        $user = User::where('cellphone', $request->input('cellphone'))->first();
+        $cellphone = $request->input('cellphone');
+        $user = User::where('cellphone', $cellphone)->first();
+        $status = 1;
 
         $code = rand(10000, 99999);
         /** @var SmsService $smsService */
         $smsService = app(SmsService::class);
-        $smsService->send($user->cellphone, trans('auth.user.otp', ['code' => $code]));
+        $smsService->send($cellphone, trans('auth.user.otp', ['code' => $code]));
+
+        if ($user === null) {
+            $status = 2;
+        }
 
         return response()->json([
-            'status' => 1
+            'status' => $status
         ]);
     }
 }
