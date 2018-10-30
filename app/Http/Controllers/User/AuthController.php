@@ -97,7 +97,7 @@ class AuthController extends Controller
     public function otpLogin(Request $request)
     {
         $cellphone = $request->input('cellphone');
-        $code = Cache::get('otp:' . $cellphone);
+        $code = Cache::get('otp:' . $cellphone, '');
 
         if ($code != $request->input('code')) {
             throw new ApiException(ErrorCode::InvalidOTPToken, 'Code is expired or invalid', 403);
