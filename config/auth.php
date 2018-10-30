@@ -99,4 +99,8 @@ return [
         ],
     ],
 
+    'otp' => [
+        'ttl' => env('AUTH_OTP_TTL', 3), // in minutes
+        'ttl_register' => env('AUTH_OTP_TTL_REGISTER', 10), // in minutes
+    ]
 ];

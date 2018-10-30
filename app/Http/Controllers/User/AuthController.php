@@ -77,12 +77,14 @@ class AuthController extends Controller
         $user = User::where('cellphone', $cellphone)->first();
         // 1 means sing-in, 2 means sign-up
         $status = 1;
+        $ttl = config('auth.otp.ttl');
         if ($user === null) {
             $status = 2;
+            $ttl = config('auth.otp.ttl_register');
         }
 
         $code = rand(10000, 99999);
-        Cache::put('otp:' . $cellphone, $code, config('auth.otp.ttl'));
+        Cache::put('otp:' . $cellphone, $code, $ttl);
         /** @var SmsService $smsService */
         $smsService = app(SmsService::class);
         $smsService->send($cellphone, trans('auth.user.otp', ['code' => $code]));
