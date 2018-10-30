@@ -29,7 +29,8 @@ class AuthTest extends FeatureCase
         $this->json('POST', route('v1.user.otp'), [
             'cellphone' => $user->cellphone,
         ])->assertOk()->assertJson([
-            'status' => 1
+            'status' => 1,
+            'name' => $user->name
         ]);
     }
 
@@ -46,7 +47,8 @@ class AuthTest extends FeatureCase
         $this->json('POST', route('v1.user.otp'), [
             'cellphone' => $cellphone,
         ])->assertOk()->assertJson([
-            'status' => 2
+            'status' => 2,
+            'name' => 'Loop'
         ]);
     }
 }
