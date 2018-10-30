@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Enums\ErrorCode;
+use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
 use App\Services\Notification\SmsService;
 use App\User;
@@ -97,6 +99,9 @@ class AuthController extends Controller
         $cellphone = $request->input('cellphone');
         $code = Cache::get('otp:' . $cellphone);
 
+        if ($code != $request->input('code')) {
+            throw new ApiException(ErrorCode::InvalidOTPToken, 'Code is expired or invalid', 403);
+        }
         /** @var User $user */
         $user = User::where('cellphone', $cellphone)->first();
 

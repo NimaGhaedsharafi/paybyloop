@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\User;
 
+use App\Enums\ErrorCode;
 use App\Services\Notification\SmsService;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -82,4 +83,20 @@ class AuthTest extends FeatureCase
         ]);
     }
 
+    /**
+     * @test
+     */
+    public function registered_user_should_not_be_logged_in_once_enters_incorrect_pin()
+    {
+        /** @var User $user */
+        $user = factory(User::class)->create();
+
+        $this->json('POST', route('v1.user.otp.login'), [
+            'cellphone' => $user->cellphone,
+            'code' => '12345',
+        ])->assertForbidden()->json([
+            'status' => ErrorCode::InvalidOTPToken,
+            'message',
+        ]);
+    }
 }
