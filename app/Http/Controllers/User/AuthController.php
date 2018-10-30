@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Notification\SmsService;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class AuthController extends Controller
 {
@@ -79,6 +80,7 @@ class AuthController extends Controller
         }
 
         $code = rand(10000, 99999);
+        Cache::put('otp:' . $cellphone, $code, config('auth.otp.ttl'));
         /** @var SmsService $smsService */
         $smsService = app(SmsService::class);
         $smsService->send($cellphone, trans('auth.user.otp', ['code' => $code]));
