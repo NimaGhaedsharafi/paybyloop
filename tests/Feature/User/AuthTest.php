@@ -119,4 +119,34 @@ class AuthTest extends FeatureCase
             'code' => '123451',
         ])->assertStatus(422);
     }
+
+    /**
+     * @test
+     */
+    public function new_user_can_register_with_otp_code()
+    {
+        $smsService = $this->prophesize(SmsService::class);
+        $cellphone = '+989025813222';
+        $smsService->send($cellphone, Argument::any());
+        app()->instance(SmsService::class, $smsService);
+
+        $this->json('POST', route('v1.user.otp'), [
+            'cellphone' => $cellphone,
+        ])->assertOk();
+
+
+        $code = Cache::get('otp:' . $cellphone);
+
+        $this->json('POST', route('v1.user.otp.register'), [
+            'cellphone' => $cellphone,
+            'first_name' => 'fname',
+            'last_name' => 'lname',
+            'email' => 'me@nifi.ir',
+            'code' => $code,
+        ])->assertOk()->json([
+            'access_token',
+            'token_type',
+            'expires_in'
+        ]);
+    }
 }
