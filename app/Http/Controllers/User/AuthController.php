@@ -83,8 +83,12 @@ class AuthController extends Controller
             $ttl = config('auth.otp.ttl_register');
         }
 
-        $code = rand(10000, 99999);
-        Cache::put('otp:' . $cellphone, $code, $ttl);
+        // let's return the code instead of regeneration
+        $code = Cache::get('otp:' . $cellphone);
+        if ($code === null) {
+            $code = rand(10000, 99999);
+            Cache::put('otp:' . $cellphone, $code, $ttl);
+        }
         /** @var SmsService $smsService */
         $smsService = app(SmsService::class);
         $smsService->send($cellphone, trans('auth.user.otp', ['code' => $code]));
