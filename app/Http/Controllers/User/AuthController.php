@@ -1,7 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
+use App\Services\Notification\SmsService;
+use App\User;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -57,6 +60,24 @@ class AuthController extends Controller
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function otp(Request $request)
+    {
+        $user = User::where('cellphone', $request->input('cellphone'))->first();
+
+        $code = rand(10000, 99999);
+        /** @var SmsService $smsService */
+        $smsService = app(SmsService::class);
+        $smsService->send($user->cellphone, trans('auth.user.otp', ['code' => $code]));
+
+        return response()->json([
+            'status' => 1
         ]);
     }
 }

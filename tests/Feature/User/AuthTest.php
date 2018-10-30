@@ -31,6 +31,5 @@ class AuthTest extends FeatureCase
         ])->assertOk()->assertJson([
             'status' => 1
         ]);
-
     }
 }
