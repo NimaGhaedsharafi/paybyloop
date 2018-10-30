@@ -23,6 +23,7 @@ class ApiException extends \RuntimeException
      * ApiException constructor.
      * @param $code
      * @param $message
+     * @param int $httpCode
      */
     public function __construct($code, $message, $httpCode = 400)
     {
