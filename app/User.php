@@ -31,7 +31,7 @@ class User extends Authenticatable implements Payable, JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'username', 'cellphone', 'email', 'password', 'cellphone_verified', 'email_verified'
+        'first_name', 'last_name', 'username', 'cellphone', 'email', 'password', 'cellphone_verified', 'email_verified'
     ];
 
     /**
@@ -96,5 +96,14 @@ class User extends Authenticatable implements Payable, JWTSubject
     public function getAuthIdentifierName()
     {
         return 'username';
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->first_name . ' ' . $this->last_name;
     }
 }

@@ -75,12 +75,16 @@ class AuthController extends Controller
         $cellphone = $request->input('cellphone');
         /** @var User $user */
         $user = User::where('cellphone', $cellphone)->first();
-        // 1 means sing-in, 2 means sign-up
-        $status = 1;
-        $ttl = config('auth.otp.ttl');
+
         if ($user === null) {
+            $name = 'Loop';
             $status = 2;
             $ttl = config('auth.otp.ttl_register');
+        } else {
+            // 1 means sing-in, 2 means sign-up
+            $status = 1;
+            $ttl = config('auth.otp.ttl');
+            $name = $user->getName();
         }
 
         // let's return the code instead of regeneration
@@ -96,7 +100,7 @@ class AuthController extends Controller
 
         return response()->json([
             'status' => $status,
-            'name' => $user->name ?? 'Loop'
+            'name' => $name
         ]);
     }
 
@@ -132,6 +136,8 @@ class AuthController extends Controller
        $user->email = $request->input('email', '');
        $user->cellphone = $request->input('cellphone');
        $user->cellphone_verified = true;
+       $user->password = rand(10000, 99999);
+       $user->email_verified = 0;
        $user->save();
 
         return $this->respondWithToken(auth()->login($user));

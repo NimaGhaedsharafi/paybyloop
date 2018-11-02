@@ -32,7 +32,7 @@ class AuthTest extends FeatureCase
             'cellphone' => $user->cellphone,
         ])->assertOk()->assertJson([
             'status' => 1,
-            'name' => $user->name
+            'name' => $user->getName()
         ]);
     }
 
