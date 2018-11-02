@@ -10,7 +10,8 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 /**
  * @property Wallet[] $wallet
  * @property int $id
- * @property string $name
+ * @property string $first_name
+ * @property string $last_name
  * @property string $username
  * @property string $cellphone
  * @property string $email
