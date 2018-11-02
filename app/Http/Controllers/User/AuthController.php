@@ -118,4 +118,22 @@ class AuthController extends Controller
 
         return $this->respondWithToken(auth()->login($user));
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function otpRegister(Request $request)
+    {
+        /** @var User $user */
+       $user = new User();
+       $user->first_name = $request->input('first_name');
+       $user->last_name = $request->input('last_name');
+       $user->email = $request->input('email', '');
+       $user->cellphone = $request->input('cellphone');
+       $user->cellphone_verified = true;
+       $user->save();
+
+        return $this->respondWithToken(auth()->login($user));
+    }
 }
