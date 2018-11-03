@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Exceptions\ApiException;
 use App\Services\Wallet\Exception\InsufficientCredit;
+use App\Services\Wallet\TransactionTypes;
 use App\Services\Wallet\WalletService;
 use App\User;
 use App\Vendor;
@@ -39,8 +40,8 @@ class WalletController extends Controller
             DB::transaction(function () use ($amount, $user, $vendor) {
                 /** @var WalletService $wallet */
                 $wallet = new WalletService();
-                $wallet->debtor($user, $amount, 1, "Pay to a vendor");
-                $wallet->creditor($vendor, $amount, 2, "Pay be a customer");
+                $wallet->debtor($user, $amount, TransactionTypes::Withdraw, "Paid to a vendor");
+                $wallet->creditor($vendor, $amount, TransactionTypes::Deposit, "Deposit from a Customer");
             });
             return response()->json([
                 'status' => 'success'
