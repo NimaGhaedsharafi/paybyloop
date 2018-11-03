@@ -105,6 +105,10 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function otpLogin(Request $request)
     {
         $this->validate($request, [
