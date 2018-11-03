@@ -1,12 +1,6 @@
 <?php
 
 // Public
-Route::post('v1/pay/verify', function () {
-    return response()->json([
-        'code' => 'myass',
-    ]);
-});
-
 Route::group(['as' => 'v1.', 'prefix' => 'v1'], function () {
 
     Route::group(['prefix' => 'user', 'as' => 'user.', 'namespace' => 'User'], function () {
