@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\User;
 
+use App\Services\Wallet\TransactionTypes;
 use App\Services\Wallet\WalletService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -25,7 +26,7 @@ class WalletTest extends FeatureCase
 
         $wallet = new WalletService();
         for ($i = 0; $i < 5; $i++) {
-            $wallet->creditor($this->user, rand(1, 10) * 1000, 1, "");
+            $wallet->creditor($this->user, rand(1, 10) * 1000, TransactionTypes::IPG, "");
         }
 
 
