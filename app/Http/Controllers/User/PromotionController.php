@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Services\Voucher\VoucherService;
+use App\Services\Wallet\TransactionTypes;
 use App\Services\Wallet\WalletService;
 use App\Voucher;
 use Illuminate\Http\Request;
@@ -25,7 +26,7 @@ class PromotionController extends Controller
 
         /** @var WalletService $walletService */
         $walletService = app(WalletService::class);
-        $walletService->creditor(Auth::user(), $voucher->amount, 3, $voucher->title);
+        $walletService->creditor(Auth::user(), $voucher->amount, TransactionTypes::Voucher, $voucher->title);
 
         return response(['status' => 'ok']);
     }
