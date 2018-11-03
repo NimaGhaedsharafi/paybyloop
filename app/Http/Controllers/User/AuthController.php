@@ -7,6 +7,7 @@ use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
 use App\Services\Notification\SmsService;
 use App\User;
+use Illuminate\Cache\Events\CacheHit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -117,6 +118,8 @@ class AuthController extends Controller
         if ($code != $request->input('code')) {
             throw new ApiException(ErrorCode::InvalidOTPToken, 'Code is expired or invalid', 403);
         }
+
+        Cache::forget('otp:' . $request->input('cellphone'));
         /** @var User $user */
         $user = User::where('cellphone', $cellphone)->first();
 
@@ -129,6 +132,22 @@ class AuthController extends Controller
      */
     public function otpRegister(Request $request)
     {
+        $this->validate($request, [
+            'code' => 'required|size:5',
+            'cellphone' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'email',
+        ]);
+
+        $code = Cache::get('otp:' . $request->input('cellphone'), '');
+
+        if ($code != $request->input('code')) {
+            throw new ApiException(ErrorCode::InvalidOTPToken, 'Code is expired or invalid', 403);
+        }
+
+       Cache::forget('otp:' . $request->input('cellphone'));
+
         /** @var User $user */
        $user = new User();
        $user->first_name = $request->input('first_name');
