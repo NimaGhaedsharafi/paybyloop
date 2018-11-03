@@ -15,4 +15,7 @@ namespace App\Enums;
 class ErrorCode
 {
     const InvalidOTPToken = 1001;
+    const InvalidAmount = 1002;
+    const PaymentInitiationFailed = 1003;
+    const PaymentVerificationFailed = 1004;
 }

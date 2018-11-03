@@ -1,12 +1,20 @@
 <?php
 
 // Public
+Route::post('v1/pay/verify', function () {
+    return response()->json([
+        'code' => 'myass',
+    ]);
+});
+
 Route::group(['as' => 'v1.', 'prefix' => 'v1'], function () {
+
     Route::group(['prefix' => 'user', 'as' => 'user.', 'namespace' => 'User'], function () {
         Route::post('config', ['as' => 'config', 'uses' => 'ProfileController@config']);
         Route::post('otp', ['as' => 'otp', 'uses' => 'AuthController@otp']);
         Route::post('otp/login', ['as' => 'otp.login', 'uses' => 'AuthController@otpLogin']);
         Route::post('otp/register', ['as' => 'otp.register', 'uses' => 'AuthController@otpRegister']);
+        Route::post('charge/ipg/callback/{code}', ['as' => 'charge.ipg.callback', 'uses' => 'PaymentController@ipgCallback']);
     });
 });
 
@@ -27,6 +35,10 @@ Route::group(['as' => 'v1.', 'prefix' => 'v1', 'middleware' => 'jwt'], function 
         });
         Route::group(['prefix' => 'promotion', 'as' => 'promotion.'], function () {
             Route::post('redeem', ['as' => 'redeem', 'uses' => 'PromotionController@redeem']);
+        });
+
+        Route::group(['prefix' => 'charge', 'as' => 'charge.'], function () {
+            Route::post('ipg', ['as' => 'ipg', 'uses' => 'PaymentController@ipg']);
         });
     });
 });
