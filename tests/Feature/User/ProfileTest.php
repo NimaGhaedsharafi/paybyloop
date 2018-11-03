@@ -20,7 +20,8 @@ class ProfileTest extends FeatureCase
         $this->json('GET', route('v1.user.profile.show'))
             ->assertOk()
             ->assertJsonStructure([
-                'name',
+                'first_name',
+                'last_name',
                 'cellphone',
                 'email',
                 'username',
