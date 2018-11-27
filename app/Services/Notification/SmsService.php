@@ -20,6 +20,9 @@ class SmsService
      */
     public function send($recipient, $message)
     {
+        if (app()->environment('production') == false) {
+            return ;
+        }
         $recipient = is_array($recipient) ? $recipient : [$recipient];
 
         /** @var KavenegarApi $service */

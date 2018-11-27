@@ -91,7 +91,7 @@ class AuthController extends Controller
         // let's return the code instead of regeneration
         $code = Cache::get('otp:' . $cellphone);
         if ($code === null) {
-            $code = rand(10000, 99999);
+            $code = (app()->environment('production')) ? rand(10000, 99999) : 12345;
             Cache::put('otp:' . $cellphone, $code, $ttl);
         }
         /** @var SmsService $smsService */
