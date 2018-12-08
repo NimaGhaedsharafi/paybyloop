@@ -113,4 +113,29 @@ class WalletTest extends FeatureCase
             ->assertStatus(200)
             ->assertJson(['balance' => 0]);
     }
+
+    /**
+     * @test
+     */
+    public function pay_to_a_vendor_with_a_valid_voucher_code_should_work()
+    {
+        $this->impersonate();
+        $this->createVendor();
+        $voucher = $this->createVoucher([
+            'code' => 'loop',
+            'static' => 1000
+        ]);
+
+        $wallet = new WalletService();
+        $wallet->creditor($this->user, 5000, 1, "");
+
+        $this->json('POST', route('v1.user.wallet.pay'), [
+            'vendor_id' => $this->vendor->vendor_id,
+            'amount' => 2000,
+            'voucher_code' => $voucher->code,
+        ])->assertOk();
+
+        $this->assertEquals(4000, $wallet->balance($this->user));
+        $this->assertEquals(1000, $wallet->balance($this->vendor));
+    }
 }
