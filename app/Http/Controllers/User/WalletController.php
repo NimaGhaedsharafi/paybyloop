@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Events\Paid;
 use App\Exceptions\ApiException;
 use App\Services\Wallet\Exception\InsufficientCredit;
 use App\Services\Wallet\TransactionTypes;
@@ -43,6 +44,8 @@ class WalletController extends Controller
                 $wallet->debtor($user, $amount, TransactionTypes::Withdraw, "Paid to a vendor");
                 $wallet->creditor($vendor, $amount, TransactionTypes::Deposit, "Deposit from a Customer");
             });
+
+            event(new Paid($user, $vendor, $amount));
             return response()->json([
                 'status' => 'success'
             ]);
