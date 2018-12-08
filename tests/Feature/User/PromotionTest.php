@@ -25,6 +25,6 @@ class PromotionTest extends FeatureCase
         $service = app(VoucherService::class);
         $voucher = $service->create(1000, 'random voucher', Carbon::tomorrow(), 'code', 1);
 
-        $this->json('POST', route('v1.user.promotion.redeem'), ['code' => $voucher])->assertOk();
+        $this->json('POST', route('v1.user.promotion.gift'), ['code' => $voucher])->assertOk();
     }
 }

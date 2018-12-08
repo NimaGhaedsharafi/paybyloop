@@ -17,7 +17,7 @@ class PromotionController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function redeem(Request $request)
+    public function gift(Request $request)
     {
         /** @var VoucherService $service */
         $service = app(VoucherService::class);
