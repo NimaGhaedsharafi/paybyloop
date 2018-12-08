@@ -75,7 +75,7 @@ class User extends Authenticatable implements Payable, JWTSubject
      */
     public function getJWTIdentifier()
     {
-        return $this->username;
+        return $this->cellphone;
     }
 
     /**
@@ -95,7 +95,7 @@ class User extends Authenticatable implements Payable, JWTSubject
      */
     public function getAuthIdentifierName()
     {
-        return 'username';
+        return 'cellphone';
     }
 
 
