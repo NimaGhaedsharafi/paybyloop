@@ -150,6 +150,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Rollbar\Laravel\RollbarServiceProvider::class,
 
         /*
          * Application Service Providers...
