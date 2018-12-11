@@ -27,4 +27,12 @@ class Vendor extends Model implements Payable
     {
         return $this->id;
     }
+
+    /**
+     * @return array
+     */
+    public function getOwnerPhoneNumber()
+    {
+        return explode(',', $this->owner_cellphone ?? '');
+    }
 }
