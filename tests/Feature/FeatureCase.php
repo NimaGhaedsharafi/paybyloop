@@ -28,6 +28,9 @@ class FeatureCase extends TestCase
     /** @var Vendor */
     protected $vendor;
 
+    /** @var Voucher */
+    protected $voucher;
+
     /**
      * impersonate into a new user
      * @param array $options
@@ -48,12 +51,13 @@ class FeatureCase extends TestCase
     {
         return $this->vendor = factory(Vendor::class)->create($options);
     }
+
     /**
      * @param array $options
      * @return Vendor
      */
     public function createVoucher($options = [])
     {
-        return $this->vendor = factory(Voucher::class)->create($options);
+        return $this->voucher = factory(Voucher::class)->create($options);
     }
 }
