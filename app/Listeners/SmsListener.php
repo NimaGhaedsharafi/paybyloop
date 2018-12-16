@@ -2,35 +2,38 @@
 
 namespace App\Listeners;
 
-use App\Services\Notification\SmsService;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SmsListener
-{
-    /**
-     * @var SmsService
-     */
-    private $smsService;
+use App\Events\Paid;
+use App\Jobs\AsyncSMS;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 
+class SmsListener {
+
+    use DispatchesJobs;
     /**
-     * Create the event listener.
+     * Register the listeners for the subscriber.
      *
-     * @param SmsService $smsService
+     * @param  \Illuminate\Events\Dispatcher  $events
      */
-    public function __construct(SmsService $smsService)
+    public function subscribe($events)
     {
-        $this->smsService = $smsService;
+        $events->listen(
+            Paid::class,
+            static::class . "@notifyVendor"
+        );
     }
 
     /**
-     * Handle the event.
-     *
-     * @param  object  $event
-     * @return void
+     * @param Paid $paid
      */
-    public function handle($event)
+    public function notifyVendor(Paid $paid)
     {
-        //
+        $text = trans('sms.paid', [
+            'name' => $paid->getUser()->getName(),
+            'amount' => $paid->getAmount(),
+            'reference' => '1234'
+        ]);
+
+        $this->dispatch(new AsyncSMS($paid->getVendor()->getOwnerPhoneNumber(), $text));
     }
 }
