@@ -123,7 +123,7 @@ class WalletTest extends FeatureCase
         $this->createVendor();
         $voucher = $this->createVoucher([
             'code' => 'loop',
-            'amount' => 1000
+            'absolute' => 1000
         ]);
 
         $wallet = new WalletService();
