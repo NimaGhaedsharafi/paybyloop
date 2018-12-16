@@ -9,6 +9,7 @@
 namespace App\Services\Voucher;
 
 use App\User;
+use App\Vendor;
 use App\Voucher;
 
 
@@ -53,9 +54,10 @@ class VoucherService
     /**
      * @param User $user
      * @param $code
+     * @param Vendor $vendor
      * @return Voucher
      */
-    public function isUserEligible(User $user, $code)
+    public function isUserEligible(User $user, $code, Vendor $vendor)
     {
         $voucher = Voucher::where('code', $code)->where('is_enabled', 1)->first();
 

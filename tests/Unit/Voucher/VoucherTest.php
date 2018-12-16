@@ -10,6 +10,7 @@ namespace Tests\Unit\Voucher;
 
 use App\Services\Voucher\VoucherService;
 use App\User;
+use App\Vendor;
 use App\Voucher;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -59,12 +60,13 @@ class VoucherTest extends TestCase
     {
         /** @var Voucher $voucher */
         $voucher = factory(Voucher::class)->create();
+        $vendor = factory(Vendor::class)->create();
         /** @var User $user */
         $user = factory(User::class)->create();
 
         /** @var VoucherService $service */
         $service = app(VoucherService::class);
-        $result = $service->isUserEligible($user, $voucher->code);
+        $result = $service->isUserEligible($user, $voucher->code, $vendor);
         $this->assertNotNull($result);
 
     }
