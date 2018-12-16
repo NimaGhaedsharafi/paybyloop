@@ -9,7 +9,7 @@
 namespace App\Services\Voucher\Exceptions;
 
 
-class AmountIsLessThanMinimumLimit extends \RuntimeException
+class AmountIsLessThanMinimumLimit extends VoucherException
 {
 
 }
