@@ -8,6 +8,8 @@
 
 namespace App\Services\Voucher;
 
+use App\Services\Voucher\Exceptions\AmountIsLessThanMinimumLimit;
+use App\Services\Voucher\Exceptions\VoucherExpired;
 use App\User;
 use App\Vendor;
 use App\Voucher;
@@ -55,11 +57,20 @@ class VoucherService
      * @param User $user
      * @param $code
      * @param Vendor $vendor
+     * @param $amount
      * @return Voucher
      */
-    public function isUserEligible(User $user, $code, Vendor $vendor)
+    public function isUserEligible(User $user, $code, Vendor $vendor, $amount)
     {
-        $voucher = Voucher::where('code', $code)->where('is_enabled', 1)->first();
+        /** @var Voucher $voucher */
+        $voucher = Voucher::where('code', $code)->first();
+
+        if ($voucher->is_enabled == 0) {
+            throw new VoucherExpired();
+        }
+        if ($voucher->min > $amount) {
+            throw new AmountIsLessThanMinimumLimit();
+        }
 
         return $voucher;
     }

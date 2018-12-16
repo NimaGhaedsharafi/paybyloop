@@ -8,6 +8,8 @@
 
 namespace Tests\Unit\Voucher;
 
+use App\Services\Voucher\Exceptions\AmountIsLessThanMinimumLimit;
+use App\Services\Voucher\Exceptions\VoucherExpired;
 use App\Services\Voucher\VoucherService;
 use App\User;
 use App\Vendor;
@@ -63,11 +65,55 @@ class VoucherTest extends TestCase
         $vendor = factory(Vendor::class)->create();
         /** @var User $user */
         $user = factory(User::class)->create();
+        $amount = $voucher->min * 2;
 
         /** @var VoucherService $service */
         $service = app(VoucherService::class);
-        $result = $service->isUserEligible($user, $voucher->code, $vendor);
+        $result = $service->isUserEligible($user, $voucher->code, $vendor, $amount);
         $this->assertNotNull($result);
+    }
+
+    /**
+     * @test
+     */
+    public function once_voucher_has_min_it_should_be_applied()
+    {
+        /** @var Voucher $voucher */
+        $voucher = factory(Voucher::class)->create();
+        /** @var Vendor $vendor */
+        $vendor = factory(Vendor::class)->create();
+        /** @var User $user */
+        $user = factory(User::class)->create();
+        $amount = $voucher->min * 2;
+
+        /** @var VoucherService $service */
+        $service = app(VoucherService::class);
+        $result = $service->isUserEligible($user, $voucher->code, $vendor, $amount);
+        $this->assertNotNull($result);
+
+        $amount = $vendor->min - 1000;
+        $this->expectException(AmountIsLessThanMinimumLimit::class);
+        $service->isUserEligible($user, $voucher->code, $vendor, $amount);
+
+    }
+
+    /**
+     * @test
+     */
+    public function once_voucher_is_not_enabled_it_should_not_be_applied()
+    {
+        /** @var Voucher $voucher */
+        $voucher = factory(Voucher::class)->create(['is_enabled' => 0]);
+        /** @var Vendor $vendor */
+        $vendor = factory(Vendor::class)->create();
+        /** @var User $user */
+        $user = factory(User::class)->create();
+        $amount = $voucher->min * 2;
+
+        /** @var VoucherService $service */
+        $service = app(VoucherService::class);
+        $this->expectException(VoucherExpired::class);
+        $service->isUserEligible($user, $voucher->code, $vendor, $amount);
 
     }
 }
