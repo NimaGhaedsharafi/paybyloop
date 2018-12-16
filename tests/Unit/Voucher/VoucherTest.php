@@ -76,6 +76,54 @@ class VoucherTest extends TestCase
     /**
      * @test
      */
+    public function eligible_calculates_based_on_amount()
+    {
+        /** @var Voucher $voucher */
+        $voucher = factory(Voucher::class)->create([
+            'absolute' => 1000,
+            'percent' => 10,
+            'min' => 0,
+            'cap' => 0,
+        ]);
+        $vendor = factory(Vendor::class)->create();
+        /** @var User $user */
+        $user = factory(User::class)->create();
+        $amount = 50000;
+
+        /** @var VoucherService $service */
+        $service = app(VoucherService::class);
+        $result = $service->isUserEligible($user, $voucher->code, $vendor, $amount);
+        $this->assertEquals($voucher->absolute + $amount * $voucher->percent, $result);
+    }
+
+
+    /**
+     * @test
+     */
+    public function once_cap_exists_it_should_be_applied()
+    {
+        /** @var Voucher $voucher */
+        $voucher = factory(Voucher::class)->create([
+            'absolute' => 1000,
+            'percent' => 100,
+            'min' => 0,
+            'cap' => 5000,
+        ]);
+        $vendor = factory(Vendor::class)->create();
+        /** @var User $user */
+        $user = factory(User::class)->create();
+        $amount = 50000;
+
+        /** @var VoucherService $service */
+        $service = app(VoucherService::class);
+        $result = $service->isUserEligible($user, $voucher->code, $vendor, $amount);
+        $this->assertEquals($voucher->cap, $result);
+    }
+
+
+    /**
+     * @test
+     */
     public function once_voucher_has_min_it_should_be_applied()
     {
         /** @var Voucher $voucher */

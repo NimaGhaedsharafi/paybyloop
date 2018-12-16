@@ -58,7 +58,7 @@ class VoucherService
      * @param $code
      * @param Vendor $vendor
      * @param $amount
-     * @return Voucher
+     * @return integer
      */
     public function isUserEligible(User $user, $code, Vendor $vendor, $amount)
     {
@@ -72,6 +72,12 @@ class VoucherService
             throw new AmountIsLessThanMinimumLimit();
         }
 
-        return $voucher;
+        $result = $voucher->absolute + $amount * $voucher->percent;
+
+        if ($voucher->cap != 0) {
+            $result = min($voucher->cap, $result);
+        }
+
+        return $result;
     }
 }
