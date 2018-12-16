@@ -36,6 +36,11 @@ class WalletController extends Controller
 
         $amount = $request->input('amount');
 
+
+        if ($request->has('voucher_code')) {
+            
+        }
+
         try {
 
             DB::transaction(function () use ($amount, $user, $vendor) {

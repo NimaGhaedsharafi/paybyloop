@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\User;
 
-use App\Services\Voucher\VoucherService;
+use App\Services\Gift\GiftService;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -21,8 +21,8 @@ class PromotionTest extends FeatureCase
     public function redeem_voucher()
     {
         $this->impersonate();
-        /** @var VoucherService $service */
-        $service = app(VoucherService::class);
+        /** @var GiftService $service */
+        $service = app(GiftService::class);
         $voucher = $service->create(1000, 'random voucher', Carbon::tomorrow(), 'code', 1);
 
         $this->json('POST', route('v1.user.promotion.gift'), ['code' => $voucher])->assertOk();

@@ -6,14 +6,14 @@
  * Time: 2:22 PM
  */
 
-namespace App\Services\Voucher\Events;
+namespace App\Services\Gift\Events;
 
 
 /**
  * Class VoucherRedeemed
  * @package App\Services\Voucher\Events
  */
-class VoucherRedeemed
+class GiftUsed
 {
     private $userId;
     private $voucherId;

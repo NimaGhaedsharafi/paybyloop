@@ -2,19 +2,23 @@
 
 namespace Tests\Unit;
 
-use App\Services\Voucher\Events\VoucherRedeemed;
+use App\Services\Gift\Events\GiftUsed;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
-use App\Services\Voucher\VoucherService;
+use App\Services\Gift\GiftService;
 
-class VoucherTest extends TestCase
+/**
+ * Class GiftTest
+ * @package Tests\Unit
+ */
+class GiftTest extends TestCase
 {
     use DatabaseTransactions;
     /**
      * @test
      */
-    public function create_voucher()
+    public function create_gift()
     {
         // fixture
         $amount =  rand(1, 10) * 1000;
@@ -23,12 +27,12 @@ class VoucherTest extends TestCase
         $code = str_random(5);
         $maxUseTime = rand(1, 10);
 
-        /** @var VoucherService $voucher */
-        $voucher = new VoucherService();
-        $voucherCode = $voucher->create($amount, $title, $expiresIn, $code, $maxUseTime);
+        /** @var GiftService $gift */
+        $gift = new GiftService();
+        $giftCode = $gift->create($amount, $title, $expiresIn, $code, $maxUseTime);
 
-        $this->assertSame($voucherCode, $code);
-        $this->assertDatabaseHas('vouchers', [
+        $this->assertSame($giftCode, $code);
+        $this->assertDatabaseHas('gifts', [
             'amount' => $amount,
             'title' => $title,
             'expires_in' => $expiresIn,
@@ -41,18 +45,18 @@ class VoucherTest extends TestCase
      * @test
      * @throws \Exception
      */
-    public function redeem_voucher()
+    public function redeem_gift()
     {
-        $code = $this->createVoucher(1000);
+        $code = $this->createGift(1000);
         $userId = 1;
 
-        $this->expectsEvents(VoucherRedeemed::class);
-        /** @var VoucherService $voucherService */
-        $voucherService = new VoucherService();
-        $result = $voucherService->redeem($userId, $code);
+        $this->expectsEvents(GiftUsed::class);
+        /** @var GiftService $giftService */
+        $giftService = new GiftService();
+        $result = $giftService->redeem($userId, $code);
 
         $this->assertNotNull($result);
-        $this->assertDatabaseHas('voucher_logs', [
+        $this->assertDatabaseHas('gift_logs', [
             'user_id' => $userId,
             'code' => $code,
             'applied_at' => Carbon::now()
@@ -66,12 +70,12 @@ class VoucherTest extends TestCase
     {
         $code = 'invalid';
         $userId = 1;
-        /** @var VoucherService $voucherService */
-        $voucherService = new VoucherService();
-        $result = $voucherService->redeem($userId, $code);
+        /** @var GiftService $giftService */
+        $giftService = new GiftService();
+        $result = $giftService->redeem($userId, $code);
 
         $this->assertNull($result);
-        $this->assertDatabaseHas('voucher_logs', [
+        $this->assertDatabaseHas('gift_logs', [
             'user_id' => $userId,
             'code' => $code,
             'applied_at' => null
@@ -86,7 +90,7 @@ class VoucherTest extends TestCase
      * @param integer|null $maxUseTime
      * @return string
      */
-    private function createVoucher($amount = null, $title = null, $expiresIn = null, $code = null, $maxUseTime = null)
+    private function createGift($amount = null, $title = null, $expiresIn = null, $code = null, $maxUseTime = null)
     {
         // fixture
         $amount = $amount ?? rand(1, 10) * 1000;
@@ -95,8 +99,8 @@ class VoucherTest extends TestCase
         $code = $code ?? str_random(5);
         $maxUseTime = $maxUseTime ?? rand(1, 10);
 
-        /** @var VoucherService $voucher */
-        $voucher = new VoucherService();
-        return $voucher->create($amount, $title, $expiresIn, $code, $maxUseTime);
+        /** @var GiftService $gift */
+        $gift = new GiftService();
+        return $gift->create($amount, $title, $expiresIn, $code, $maxUseTime);
     }
 }

@@ -11,6 +11,7 @@ namespace Tests\Feature;
 
 use App\User;
 use App\Vendor;
+use App\Gift;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
@@ -45,5 +46,13 @@ class FeatureCase extends TestCase
     public function createVendor($options = [])
     {
         return $this->vendor = factory(Vendor::class)->create($options);
+    }
+    /**
+     * @param array $options
+     * @return Vendor
+     */
+    public function createVoucher($options = [])
+    {
+        return $this->vendor = factory(Gift::class)->create($options);
     }
 }
