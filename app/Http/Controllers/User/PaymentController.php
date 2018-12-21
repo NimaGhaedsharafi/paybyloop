@@ -104,6 +104,7 @@ class PaymentController extends Controller
             'base_uri' => config('payping.base_uri')
         ]);
 
+        $payment->payping_reference = $refId;
         $payment->status = Payping::Verifying;
         $payment->save();
 
