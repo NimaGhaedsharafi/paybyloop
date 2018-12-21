@@ -8,7 +8,7 @@ Route::group(['as' => 'v1.', 'prefix' => 'v1'], function () {
         Route::post('otp', ['as' => 'otp', 'uses' => 'AuthController@otp']);
         Route::post('otp/login', ['as' => 'otp.login', 'uses' => 'AuthController@otpLogin']);
         Route::post('otp/register', ['as' => 'otp.register', 'uses' => 'AuthController@otpRegister']);
-        Route::post('charge/ipg/callback/{code}', ['as' => 'charge.ipg.callback', 'uses' => 'PaymentController@ipgCallback']);
+        Route::any('charge/ipg/callback', ['as' => 'charge.ipg.callback', 'uses' => 'PaymentController@ipgCallback']);
     });
 });
 

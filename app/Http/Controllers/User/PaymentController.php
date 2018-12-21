@@ -88,15 +88,17 @@ class PaymentController extends Controller
      * @param $code
      * @return mixed
      */
-    public function ipgCallback(Request $request, $code)
+    public function ipgCallback(Request $request)
     {
         if (count(config('payping.ips')) != 0 && in_array($request->ip(), config('payping.ips')) == false) {
             \Log::error('IPG: ' . 'A Doggy guy is trying to come in with this IP address(' . $request->ip() . ')');
             return abort(403);
         }
 
+        $refId = $request->input('refid');
+        $clientRefId = $request->input('clientrefid');
         /** @var Payping $payment */
-        $payment = Payping::where('code', trim($code))->where('status', Payping::Requested)->latest()->firstOrFail();
+        $payment = Payping::where('reference_id', trim($clientRefId))->where('status', Payping::Requested)->latest()->firstOrFail();
 
         $client = new Client([
             'base_uri' => config('payping.base_uri')
@@ -105,9 +107,10 @@ class PaymentController extends Controller
         $payment->status = Payping::Verifying;
         $payment->save();
 
+        $code = strtoupper($payment->code);
         $params = [
             'amount' => $payment->amount,
-            'refId' => $payment->reference_id,
+            'refId' => $refId,
         ];
 
         try {
