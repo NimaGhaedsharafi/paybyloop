@@ -17,7 +17,7 @@ $factory->define(App\Voucher::class, function () {
         'per_user' => rand(1, 5),
         'cap' => 0,
         'min' => 0,
-        'only_on_first' => rand(0, 1),
+        'only_on_first' => 0,
         'is_enabled' => 1,
         'whitelist_parent_id' => 0,
     ];
