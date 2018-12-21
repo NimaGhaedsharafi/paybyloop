@@ -13,6 +13,7 @@ use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\RequestOptions;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use function GuzzleHttp\json_decode as json_decode;
 
@@ -114,6 +115,9 @@ class PaymentController extends Controller
             'refId' => $refId,
         ];
 
+        /** @var User $user */
+        $user = User::find($payment->user_id);
+
         try {
             $client->request('POST', 'v1/pay/verify', [
                 RequestOptions::HEADERS => [
@@ -125,15 +129,15 @@ class PaymentController extends Controller
                 RequestOptions::TIMEOUT => 5
             ]);
 
+
+            DB::beginTransaction();
             $payment->status = Payping::Verified;
             $payment->save();
-
-            /** @var User $user */
-            $user = User::find($payment->user_id);
 
             /** @var WalletService $wallet */
             $wallet = app(WalletService::class);
             $balance = $wallet->creditor($user, $payment->amount, TransactionTypes::IPG, 'IPG Payment‌');
+            DB::commit();
 
             return view('payment.success', [
                 'amount' => $payment->getCameraReadyNumber(),
