@@ -139,4 +139,29 @@ class WalletTest extends FeatureCase
         $this->assertEquals(4000, $wallet->balance($this->user));
         $this->assertEquals(2000, $wallet->balance($this->vendor));
     }
+
+    /**
+     * @test
+     */
+    public function check_voucher_code_works()
+    {
+        $this->impersonate();
+        $this->createVendor();
+        $voucher = $this->createVoucher([
+            'code' => 'loop',
+            'absolute' => 1000,
+            'percent' => 0
+        ]);
+
+        $wallet = new WalletService();
+        $wallet->creditor($this->user, 5000, 1, "");
+
+        $this->json('POST', route('v1.user.wallet.voucher'), [
+            'vendor_id' => $this->vendor->vendor_id,
+            'amount' => 2000,
+            'voucher_code' => $voucher->code,
+        ])->assertOk()->assertJson([
+            'amount' => 1000
+        ]);
+    }
 }

@@ -78,4 +78,33 @@ class WalletController extends Controller
             'balance' => (new WalletService())->balance(Auth::user())
         ]);
     }
+
+    /**
+     * @param Request $request
+     */
+    public function voucherCheck(Request $request)
+    {
+        $this->validate($request, [
+            'amount' => 'required|numeric',
+            'vendor_id' => 'required',
+            'voucher_code' => 'required'
+        ]);
+
+        /** @var User $user */
+        $user = Auth::user();
+        /** @var Vendor $vendor */
+        $vendor = Vendor::where('vendor_id', $request->input('vendor_id'))->firstOrFail();
+        $amount = $request->input('amount');
+
+
+        try {
+            $promotion = app(VoucherService::class)->isUserEligible($user, $request->input('voucher_code'), $vendor, $amount);
+        } catch (VoucherException $exception) {
+            throw new ApiException(1002, 'voucher can\'t be applied');
+        }
+
+        return response()->json([
+            'amount' => $amount - $promotion
+        ]);
+    }
 }
