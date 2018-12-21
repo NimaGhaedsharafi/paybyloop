@@ -12,17 +12,5 @@
 */
 
 Route::get('/', function () {
-    return view('payment.success', ['amount' => 2000 , 'ref' => '1231']);
-});
-
-Route::get('gimmemoneybitch', function () {
-    if (\Auth::user() !== null) {
-        app(App\Services\Wallet\WalletService::class)
-            ->creditor(\Auth::user(), 100000, -9, "used a cheat code!");
-
-        return response()->json([
-            'balance' => app(App\Services\Wallet\WalletService::class)->balance(\Auth::user())
-            ]);
-    }
-    return 'fuck you bitch!';
+    return redirect('https://paybyloop.app');
 });
