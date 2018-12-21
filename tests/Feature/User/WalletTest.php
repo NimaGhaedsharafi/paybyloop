@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\User;
 
+use App\Events\Paid;
 use App\Services\Wallet\TransactionTypes;
 use App\Services\Wallet\WalletService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -46,6 +47,7 @@ class WalletTest extends FeatureCase
         $wallet = new WalletService();
         $wallet->creditor($this->user, 5000, 1, "");
 
+        $this->expectsEvents(Paid::class);
         $this->json('POST', route('v1.user.wallet.pay'), [
             'vendor_id' => $this->vendor->vendor_id,
             'amount' => 2000
@@ -53,6 +55,13 @@ class WalletTest extends FeatureCase
 
         $this->assertEquals(3000, $wallet->balance($this->user));
         $this->assertEquals(2000, $wallet->balance($this->vendor));
+
+        $this->assertDatabaseHas('receipts', [
+            'user_id' => $this->user->id,
+            'vendor_id' => $this->vendor->id,
+            'amount' => 2000,
+            'total' => 2000,
+        ]);
     }
 
     /**
@@ -138,6 +147,13 @@ class WalletTest extends FeatureCase
 
         $this->assertEquals(4000, $wallet->balance($this->user));
         $this->assertEquals(2000, $wallet->balance($this->vendor));
+
+        $this->assertDatabaseHas('receipts', [
+            'user_id' => $this->user->id,
+            'vendor_id' => $this->vendor->id,
+            'amount' => 1000,
+            'total' => 2000,
+        ]);
     }
 
     /**

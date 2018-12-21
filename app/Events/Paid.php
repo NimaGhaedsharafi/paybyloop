@@ -20,20 +20,20 @@ class Paid
     /** @var Vendor */
     private $vendor;
 
-    private $amount;
+    private $receipt;
 
     /**
      * Create a new event instance.
      *
      * @param $user
      * @param $vendor
-     * @param $amount
+     * @param $receipt
      */
-    public function __construct($user, $vendor, $amount)
+    public function __construct($user, $vendor, $receipt)
     {
         $this->user = $user;
         $this->vendor = $vendor;
-        $this->amount = $amount;
+        $this->receipt = $receipt;
     }
 
     /**
@@ -83,14 +83,23 @@ class Paid
      */
     public function getAmount()
     {
-        return $this->amount;
+        return $this->receipt->total;
     }
 
     /**
-     * @param mixed $amount
+     * @param mixed $receipt
      */
-    public function setAmount($amount): void
+    public function setAmount($receipt): void
     {
-        $this->amount = $amount;
+        $this->receipt = $receipt;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getReference()
+    {
+        return $this->receipt->reference;
+    }
+
 }

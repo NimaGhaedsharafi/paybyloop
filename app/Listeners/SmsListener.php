@@ -31,7 +31,7 @@ class SmsListener {
         $text = trans('sms.paid', [
             'name' => $paid->getUser()->getName(),
             'amount' => $paid->getAmount(),
-            'reference' => '1234'
+            'reference' => $paid->getReference()
         ]);
 
         $this->dispatch(new AsyncSMS($paid->getVendor()->getOwnerPhoneNumber(), $text));
