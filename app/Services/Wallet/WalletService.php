@@ -10,6 +10,7 @@ namespace App\Services\Wallet;
 
 use App\Services\Wallet\Exception\InsufficientCredit;
 use App\Wallet;
+use Carbon\Carbon;
 
 
 /**
@@ -48,6 +49,7 @@ class WalletService
         $wallet = new Wallet();
         $wallet->user_id = $user->getId();
         $wallet->user_type = $user->getType();
+        $wallet->reference = 'LPC-' . Carbon::now()->dayOfYear . '-' . str_random(7);
         $wallet->creditor = $amount;
         $wallet->debtor = 0;
         $wallet->type = $type;
@@ -78,6 +80,7 @@ class WalletService
         $wallet = new Wallet();
         $wallet->user_id = $user->getId();
         $wallet->user_type = $user->getType();
+        $wallet->reference = 'LPD-' . Carbon::now()->dayOfYear . '-' . str_random(7);
         $wallet->creditor = 0;
         $wallet->debtor = $amount;
         $wallet->type = $type;
