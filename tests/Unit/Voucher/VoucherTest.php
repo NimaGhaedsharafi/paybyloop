@@ -9,6 +9,7 @@
 namespace Tests\Unit\Voucher;
 
 use App\Services\Voucher\Exceptions\AmountIsLessThanMinimumLimit;
+use App\Services\Voucher\Exceptions\InvalidVoucherCode;
 use App\Services\Voucher\Exceptions\VoucherExpired;
 use App\Services\Voucher\VoucherService;
 use App\User;
@@ -184,5 +185,21 @@ class VoucherTest extends TestCase
         $this->expectException(VoucherExpired::class);
         $service->isUserEligible($user, $voucher->code, $vendor, $amount);
 
+    }
+    
+    /**
+     * @test
+     */
+    public function invalid_voucher_code_throws_exception()
+    {
+        /** @var Vendor $vendor */
+        $vendor = factory(Vendor::class)->create();
+        /** @var User $user */
+        $user = factory(User::class)->create();
+
+        /** @var VoucherService $service */
+        $service = app(VoucherService::class);
+        $this->expectException(InvalidVoucherCode::class);
+        $service->isUserEligible($user, 'random-code', $vendor, 1000);
     }
 }

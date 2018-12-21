@@ -9,6 +9,7 @@
 namespace App\Services\Voucher;
 
 use App\Services\Voucher\Exceptions\AmountIsLessThanMinimumLimit;
+use App\Services\Voucher\Exceptions\InvalidVoucherCode;
 use App\Services\Voucher\Exceptions\VoucherExpired;
 use App\User;
 use App\Vendor;
@@ -65,6 +66,9 @@ class VoucherService
         /** @var Voucher $voucher */
         $voucher = Voucher::where('code', $code)->first();
 
+        if ($voucher === null) {
+            throw new InvalidVoucherCode();
+        }
         if ($voucher->is_enabled == 0) {
             throw new VoucherExpired();
         }
