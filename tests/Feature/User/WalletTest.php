@@ -123,7 +123,8 @@ class WalletTest extends FeatureCase
         $this->createVendor();
         $voucher = $this->createVoucher([
             'code' => 'loop',
-            'absolute' => 1000
+            'absolute' => 1000,
+            'percent' => 0
         ]);
 
         $wallet = new WalletService();
@@ -136,6 +137,6 @@ class WalletTest extends FeatureCase
         ])->assertOk();
 
         $this->assertEquals(4000, $wallet->balance($this->user));
-        $this->assertEquals(1000, $wallet->balance($this->vendor));
+        $this->assertEquals(2000, $wallet->balance($this->vendor));
     }
 }

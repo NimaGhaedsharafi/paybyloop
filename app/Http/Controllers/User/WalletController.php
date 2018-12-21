@@ -4,11 +4,14 @@ namespace App\Http\Controllers\User;
 
 use App\Events\Paid;
 use App\Exceptions\ApiException;
+use App\Services\Voucher\Exceptions\VoucherException;
+use App\Services\Voucher\VoucherService;
 use App\Services\Wallet\Exception\InsufficientCredit;
 use App\Services\Wallet\TransactionTypes;
 use App\Services\Wallet\WalletService;
 use App\User;
 use App\Vendor;
+use App\Voucher;
 use App\Wallet;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -36,17 +39,24 @@ class WalletController extends Controller
 
         $amount = $request->input('amount');
 
-
+        // set a default value for promotion
+        $promotion = 0;
         if ($request->has('voucher_code')) {
-            
+            /** @var VoucherService $voucher */
+            $voucher = app(VoucherService::class);
+            try {
+                $promotion = $voucher->isUserEligible($user, $request->input('voucher_code'), $vendor, $amount);
+            } catch (VoucherException $exception) {
+                throw new ApiException(1002, 'voucher can\'t be applied');
+            }
         }
 
         try {
 
-            DB::transaction(function () use ($amount, $user, $vendor) {
+            DB::transaction(function () use ($amount, $user, $vendor, $promotion) {
                 /** @var WalletService $wallet */
                 $wallet = new WalletService();
-                $wallet->debtor($user, $amount, TransactionTypes::Withdraw, "Paid to a vendor");
+                $wallet->debtor($user, $amount - $promotion, TransactionTypes::Withdraw, "Paid to a vendor");
                 $wallet->creditor($vendor, $amount, TransactionTypes::Deposit, "Deposit from a Customer");
             });
 
