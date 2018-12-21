@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('payment.success', ['amount' => 2000 , 'ref' => '1231']);
 });
 
 Route::get('gimmemoneybitch', function () {

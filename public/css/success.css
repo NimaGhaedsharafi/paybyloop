@@ -1,0 +1,108 @@
+@import url(fontiran.css);
+body {
+    background-color: #FAFAFA;
+    text-align: center;
+    display: flex;
+    flex-flow: column;
+    min-height: 99%;
+}
+
+footer {
+    width: 70%;
+    margin: 30px auto;
+    font-size: 12pt;
+    color: #666666;
+}
+
+.button {
+    font-size: 28pt;
+    font-family: IRANSans !important;
+    background-color: rgb(49, 173, 63);
+    border: none;
+    border-radius: 150px;
+    color: white;
+    padding: 15px 48px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.button:hover, .button:active {
+    background-color: rgb(43, 99, 49);
+}
+
+#statusContainer {
+    padding: 20px;
+    margin-top: 30px;
+    margin-bottom: 80px;
+    margin-left: auto;
+    margin-right: auto;
+
+    background-color: white;
+    max-width: 900px;
+    min-width: 700px;
+    border: 1pt;
+    border-color: #C2C2C2;
+    border-style: solid;
+    border-radius: 25px;
+    box-shadow: 0px 3px 10px #cccccc;
+}
+
+#logo {
+    margin-top: 80px;
+    margin-bottom: 20px;
+    padding: 40px;
+    height: 110px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#topUpAmount {
+    color: #15BC71;
+    font-family: IRANSans !important;
+    font-size: 88pt;
+    display: block;
+}
+
+#currency {
+    color: #15BC71;
+    font-size: 38pt;
+    display: inline;
+}
+
+#successTick {
+    margin-top:100px;
+    margin-bottom:0px;
+    width: 200px;
+}
+
+#statusText {
+    font-size: 32pt;
+    font-family: IRANSans !important;
+    margin: 30px;
+    height: 40px;
+}
+
+#caption {
+    color: #15BC71;
+    font-size: 28pt;
+    font-family: IRANSans !important;
+    margin: 40px;
+    margin-bottom: 40px;
+}
+
+#callToAction {
+    padding-bottom: 20px;
+    padding-top: 30px;
+}
+
+#footerTelephone {
+    font-size: 24pt;
+    font-family: IRANSans !important;
+}

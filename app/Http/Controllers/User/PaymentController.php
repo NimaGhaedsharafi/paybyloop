@@ -132,9 +132,8 @@ class PaymentController extends Controller
             $balance = $wallet->creditor($user, $payment->amount, TransactionTypes::IPG, 'IPG Payment‌');
 
             return view('payment.success', [
-                'amount' => $payment->amount,
-                'user' => $user->getName(),
-                'balance' => $balance,
+                'amount' => $payment->getCameraReadyNumber(),
+                'ref' => $code,
             ]);
         } catch (\Exception $exception) {
             Log::error('IPG: ' . $exception->getMessage());
