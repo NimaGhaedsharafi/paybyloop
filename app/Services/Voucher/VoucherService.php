@@ -72,12 +72,12 @@ class VoucherService
             throw new AmountIsLessThanMinimumLimit();
         }
 
-        $result = $voucher->absolute + $amount * $voucher->percent;
+        $result = $voucher->absolute + $amount * ($voucher->percent / 100.0);
 
         if ($voucher->cap != 0) {
             $result = min($voucher->cap, $result);
         }
 
-        return $result;
+        return min($result, $amount);
     }
 }

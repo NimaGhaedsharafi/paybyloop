@@ -93,7 +93,7 @@ class VoucherTest extends TestCase
         /** @var VoucherService $service */
         $service = app(VoucherService::class);
         $result = $service->isUserEligible($user, $voucher->code, $vendor, $amount);
-        $this->assertEquals($voucher->absolute + $amount * $voucher->percent, $result);
+        $this->assertEquals($voucher->absolute + $amount * ($voucher->percent / 100), $result);
     }
 
 
@@ -118,6 +118,27 @@ class VoucherTest extends TestCase
         $service = app(VoucherService::class);
         $result = $service->isUserEligible($user, $voucher->code, $vendor, $amount);
         $this->assertEquals($voucher->cap, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function at_most_amount_would_be_the_result()
+    {
+        /** @var Voucher $voucher */
+        $voucher = factory(Voucher::class)->create([
+            'absolute' => 1000,
+            'percent' => 1000,
+        ]);
+        $vendor = factory(Vendor::class)->create();
+        /** @var User $user */
+        $user = factory(User::class)->create();
+        $amount = 50000;
+
+        /** @var VoucherService $service */
+        $service = app(VoucherService::class);
+        $result = $service->isUserEligible($user, $voucher->code, $vendor, $amount);
+        $this->assertEquals($amount, $result);
     }
 
 
