@@ -74,7 +74,7 @@ class WalletController extends Controller
             DB::transaction(function () use ($user, $vendor, $receipt) {
                 /** @var WalletService $wallet */
                 $wallet = new WalletService();
-                $wallet->debtor($user, $receipt->amount, TransactionTypes::Withdraw, "Paid to a vendor");
+                $wallet->debtor($user, $receipt->amount, TransactionTypes::Withdraw, trans('transaction.payment', ['name' => $vendor->name], 'fa'));
                 $wallet->creditor($vendor, $receipt->total, TransactionTypes::Deposit, "Deposit from a Customer");
                 $receipt->status = 1; // done
                 $receipt->save();

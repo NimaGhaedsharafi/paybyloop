@@ -146,7 +146,7 @@ class PaymentController extends Controller
 
             /** @var WalletService $wallet */
             $wallet = app(WalletService::class);
-            $balance = $wallet->creditor($user, $payment->amount, TransactionTypes::IPG, 'IPG Payment‌');
+            $balance = $wallet->creditor($user, $payment->amount, TransactionTypes::IPG, trans('transaction.ipg', [], 'fa'));
             DB::commit();
 
             return view('payment.success', [

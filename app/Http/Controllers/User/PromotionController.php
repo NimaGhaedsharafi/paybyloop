@@ -26,7 +26,7 @@ class PromotionController extends Controller
 
         /** @var WalletService $walletService */
         $walletService = app(WalletService::class);
-        $walletService->creditor(Auth::user(), $voucher->amount, TransactionTypes::Voucher, $voucher->title);
+        $walletService->creditor(Auth::user(), $voucher->amount, TransactionTypes::Voucher, trans('transaction.giftcard', [], 'fa'));
 
         return response(['status' => 'ok']);
     }
