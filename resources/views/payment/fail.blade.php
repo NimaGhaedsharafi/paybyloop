@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{{ asset('css/failure.css') }}">
 
-    <title>شارژ موفق</title>
+    <title>تراکنش ناموفق</title>
 </head>
 <body>
 <img id="logo" src="{{ asset('img/loop.png') }}">
