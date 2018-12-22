@@ -96,7 +96,7 @@ class AuthController extends Controller
         }
         /** @var SmsService $smsService */
         $smsService = app(SmsService::class);
-        $smsService->send($cellphone, trans('auth.user.otp', ['code' => $code]));
+        $smsService->send($cellphone, trans('sms.otp', ['code' => $code], 'fa'));
 
 
         return response()->json([
