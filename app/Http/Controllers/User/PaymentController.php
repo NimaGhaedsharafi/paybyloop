@@ -77,7 +77,9 @@ class PaymentController extends Controller
             $payment->save();
 
             // https://api.payping.ir/v1/pay/gotoipg/%7Bcode%7D
-            return redirect(config('payping.base_uri') . 'v1/pay/gotoipg/' . $payment->code, 301);
+            return response()->json([
+                'url' => (config('payping.base_uri') . 'v1/pay/gotoipg/' . $payment->code)
+            ]);
         } catch (\Exception $exception) {
             Log::error('IPG: ' . $exception->getMessage());
             throw new ApiException(ErrorCode::PaymentInitiationFailed, 'Something went wrong!');
