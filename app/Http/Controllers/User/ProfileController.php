@@ -24,10 +24,12 @@ class ProfileController extends Controller
             'os' => 'required',
         ]);
 
+        $os = $request->input('os');
+
         return response()->json([
-            'supported_build' => 1,
-            'latest_build' => 2,
-            'update_url' => 'https://loop.com'
+            'supported_build' => config("loop.version.{$os}.supported"),
+            'latest_build' => config("loop.version.{$os}.latest"),
+            'update_url' => config("loop.version.{$os}.url")
         ]);
     }
 
