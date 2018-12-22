@@ -100,8 +100,17 @@ class PaymentController extends Controller
 
         $refId = $request->input('refid');
         $clientRefId = $request->input('clientrefid');
+
+
         /** @var Payping $payment */
-        $payment = Payping::where('reference_id', trim($clientRefId))->where('status', Payping::Requested)->latest()->firstOrFail();
+        $payment = Payping::where('reference_id', trim($clientRefId))->latest()->firstOrFail();
+        $code = strtoupper($payment->code);
+
+        if ($payment->status ==  Payping::Requested || $refId == 1) {
+            return view('payment.fail', [
+                'code' => $code,
+            ]);
+        }
 
         $client = new Client([
             'base_uri' => config('payping.base_uri')
@@ -111,7 +120,6 @@ class PaymentController extends Controller
         $payment->status = Payping::Verifying;
         $payment->save();
 
-        $code = strtoupper($payment->code);
         $params = [
             'amount' => $payment->amount,
             'refId' => $refId,
