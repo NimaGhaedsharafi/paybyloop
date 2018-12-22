@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Receipt;
 use App\User;
 use App\Vendor;
 use Illuminate\Broadcasting\Channel;
@@ -19,7 +20,7 @@ class Paid
     private $user;
     /** @var Vendor */
     private $vendor;
-
+    /** @var Receipt */
     private $receipt;
 
     /**
@@ -83,7 +84,7 @@ class Paid
      */
     public function getAmount()
     {
-        return $this->receipt->total;
+        return $this->receipt->getCameraReadyNumber('total');
     }
 
     /**
