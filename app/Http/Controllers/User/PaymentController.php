@@ -106,9 +106,9 @@ class PaymentController extends Controller
         $payment = Payping::where('reference_id', trim($clientRefId))->latest()->firstOrFail();
         $code = strtoupper($payment->code);
 
-        if ($payment->status ==  Payping::Requested || $refId == 1) {
+        if ($payment->status != Payping::Requested || $refId == 1) {
             return view('payment.fail', [
-                'code' => $code,
+                'ref' => $code,
             ]);
         }
 
