@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Enums\ErrorCode;
 use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
+use App\Jobs\AsyncSMS;
 use App\Services\Notification\SmsService;
 use App\User;
 use Illuminate\Cache\Events\CacheHit;
@@ -94,9 +95,8 @@ class AuthController extends Controller
             $code = (app()->environment('production')) ? rand(10000, 99999) : 12345;
             Cache::put('otp:' . $cellphone, $code, $ttl);
         }
-        /** @var SmsService $smsService */
-        $smsService = app(SmsService::class);
-        $smsService->send($cellphone, trans('sms.otp', ['code' => $code], 'fa'));
+
+        $this->dispatch(new AsyncSMS($cellphone, trans('sms.otp', ['code' => $code], 'fa')));
 
 
         return response()->json([
