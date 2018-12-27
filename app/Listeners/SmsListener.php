@@ -32,7 +32,7 @@ class SmsListener {
             'name' => $paid->getUser()->getName(),
             'amount' => $paid->getAmount(),
             'reference' => $paid->getReference()
-        ]);
+        ], 'fa');
 
         $this->dispatch(new AsyncSMS($paid->getVendor()->getOwnerPhoneNumber(), $text));
     }
