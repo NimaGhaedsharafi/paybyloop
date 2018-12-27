@@ -73,7 +73,7 @@ class VoucherService
             throw new VoucherExpired();
         }
         if ($voucher->min > $amount) {
-            throw new AmountIsLessThanMinimumLimit();
+            throw new AmountIsLessThanMinimumLimit($voucher->min);
         }
 
         $result = $voucher->absolute + $amount * ($voucher->percent / 100.0);

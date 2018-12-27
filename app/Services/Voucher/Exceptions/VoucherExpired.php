@@ -11,5 +11,9 @@ namespace App\Services\Voucher\Exceptions;
 
 class VoucherExpired extends VoucherException
 {
+    public function __construct()
+    {
+        $this->message = trans('voucher.expired', [], 'fa');
+    }
 
 }

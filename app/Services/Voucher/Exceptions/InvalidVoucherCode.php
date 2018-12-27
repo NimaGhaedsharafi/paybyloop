@@ -11,5 +11,8 @@ namespace App\Services\Voucher\Exceptions;
 
 class InvalidVoucherCode extends VoucherException
 {
-
+    public function __construct()
+    {
+        $this->message = trans('voucher.invalid', [], 'fa');
+    }
 }

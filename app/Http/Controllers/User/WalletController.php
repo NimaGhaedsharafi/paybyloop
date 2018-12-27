@@ -54,7 +54,7 @@ class WalletController extends Controller
                     $voucherId = Voucher::select('id')->where('code', $request->input('voucher_code'))->first()->id;
                 }
             } catch (VoucherException $exception) {
-                throw new ApiException(1002, 'voucher can\'t be applied');
+                throw new ApiException(1002, $exception->getMessage());
             }
         }
 
