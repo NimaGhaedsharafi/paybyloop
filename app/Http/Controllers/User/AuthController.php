@@ -6,9 +6,7 @@ use App\Enums\ErrorCode;
 use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
 use App\Jobs\AsyncSMS;
-use App\Services\Notification\SmsService;
 use App\User;
-use Illuminate\Cache\Events\CacheHit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
