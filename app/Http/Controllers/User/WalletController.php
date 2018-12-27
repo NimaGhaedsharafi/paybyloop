@@ -71,9 +71,18 @@ class WalletController extends Controller
             $receipt->status = 0; // initiated
             $receipt->save();
 
-            DB::transaction(function () use ($user, $vendor, $receipt) {
-                /** @var WalletService $wallet */
-                $wallet = new WalletService();
+            /** @var WalletService $wallet */
+            $wallet = new WalletService();
+            if ($wallet->balance($user) < $receipt->amount) {
+                $query = [
+                    'ref' => $receipt->reference,
+                    'amount' => min(1000, $receipt->amount - $wallet->balance($user))
+                ];
+
+                return redirect(route('v1.user.charge.auto') . '/' . http_build_query($query));
+            }
+
+            DB::transaction(function () use ($wallet, $user, $vendor, $receipt) {
                 $wallet->debtor($user, $receipt->amount, TransactionTypes::Withdraw, trans('transaction.payment', ['name' => $vendor->name], 'fa'));
                 $wallet->creditor($vendor, $receipt->total, TransactionTypes::Deposit, "Deposit from a Customer");
                 $receipt->status = 1; // done

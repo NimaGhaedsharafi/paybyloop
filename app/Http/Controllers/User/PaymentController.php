@@ -21,6 +21,7 @@ class PaymentController extends Controller
 {
     /**
      * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function ipg(Request $request)
     {
@@ -35,8 +36,8 @@ class PaymentController extends Controller
 
         /** @var User $user */
         $user = auth()->user();
-        /** @var Client $client */
 
+        /** @var Client $client */
         $client = new Client([
             'base_uri' => config('payping.base_uri')
         ]);
@@ -50,12 +51,17 @@ class PaymentController extends Controller
         $payment->reference_id = strtolower(str_random(20) . time());
         $payment->save();
 
+        $query = '';
+        if ($request->has('ref')) {
+            $query = '/?receipt=' . $request->input('ref');
+        }
+
         $params = [
             'payerName' => $user->getName(),
             'payerIdentity' => $user->cellphone,
             'amount' => $amount,
             'clientRefId' => $payment->reference_id,
-            'returnUrl' => route('v1.user.charge.ipg.callback', ['code' => $payment->code]),
+            'returnUrl' => route('v1.user.charge.ipg.callback') . $query,
         ];
 
         try {
@@ -159,5 +165,19 @@ class PaymentController extends Controller
                 'code' => $code,
             ]);
         }
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function auto(Request $request)
+    {
+        $this->validate($request, [
+            'amount' => 'required|numeric|min:1000',
+            'ref' => 'required'
+        ]);
+
+        return $this->ipg($request);
     }
 }

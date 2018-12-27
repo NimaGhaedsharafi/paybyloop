@@ -34,6 +34,7 @@ Route::group(['as' => 'v1.', 'prefix' => 'v1', 'middleware' => 'jwt'], function 
 
         Route::group(['prefix' => 'charge', 'as' => 'charge.'], function () {
             Route::post('ipg', ['as' => 'ipg', 'uses' => 'PaymentController@ipg']);
+            Route::get('auto', ['as' => 'auto', 'uses' => 'PaymentController@auto']);
         });
     });
 });

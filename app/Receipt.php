@@ -4,6 +4,20 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Receipt
+ * @package App
+ * @property integer user_id
+ * @property integer vendor_id
+ * @property integer voucher_id
+ * @property integer saving
+ * @property integer amount
+ * @property integer total
+ * @property string reference
+ * @property integer status
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ */
 class Receipt extends Model
 {
     /**
