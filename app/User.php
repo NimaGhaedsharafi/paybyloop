@@ -106,4 +106,12 @@ class User extends Authenticatable implements Payable, JWTSubject
     {
         return $this->first_name . ' ' . $this->last_name;
     }
+
+    /**
+     * @return bool
+     */
+    public function isBlocked()
+    {
+        return false;
+    }
 }
