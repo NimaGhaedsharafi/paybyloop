@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,6 +24,15 @@ class ProfileController extends Controller
             'build' => 'required',
             'os' => 'required',
         ]);
+
+        /** @var User $user */
+        $user = auth()->user();
+
+        if ($user !== null && $user->isBlocked()) {
+            return response()->json([
+                'message' => trans('system.blocked', [], 'fa')
+            ], 403);
+        }
 
         $os = $request->input('os');
 
