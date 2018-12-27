@@ -14,7 +14,7 @@ class ProfileController extends Controller
 {
     /**
      * On Splash, client request and send information about build and os and receive some basic info
-     * @param Request $wrequest
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function config(Request $request)
