@@ -37,6 +37,10 @@ class WalletController extends Controller
 
         /** @var User $user */
         $user = Auth::user();
+
+        if ($user->isBlocked()) {
+            throw new ApiException(1003, trans('system.blocked', [], 'fa'), 403);
+        }
         /** @var Vendor $vendor */
         $vendor = Vendor::where('vendor_id', $request->input('vendor_id'))->firstOrFail();
 

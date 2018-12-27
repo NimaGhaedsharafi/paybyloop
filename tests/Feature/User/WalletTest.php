@@ -178,4 +178,27 @@ class WalletTest extends FeatureCase
             'amount' => 1000
         ]);
     }
+
+    /**
+     * @test
+     */
+    public function pay_fails_when_user_is_blocked()
+    {
+        $this->impersonate();
+        $this->createVendor();
+
+        // block the user
+        $this->user->is_blocked = 1;
+        $this->user->save();
+
+        $wallet = new WalletService();
+        $wallet->creditor($this->user, 5000, 1, "");
+
+        $this->json('POST', route('v1.user.wallet.pay'), [
+            'vendor_id' => $this->vendor->vendor_id,
+            'amount' => 2000
+        ])->assertForbidden()->dump();
+
+        $wallet->balance($this->user);
+    }
 }
