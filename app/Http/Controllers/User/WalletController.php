@@ -45,7 +45,7 @@ class WalletController extends Controller
         // set a default value for promotion
         $promotion = 0;
         $voucherId = 0;
-        if ($request->has('voucher_code') && strlen(trim($request->has('voucher_code'))) > 0) {
+        if ($request->has('voucher_code') && strlen(trim($request->input('voucher_code'))) > 0) {
             /** @var VoucherService $voucher */
             $voucher = app(VoucherService::class);
             try {
