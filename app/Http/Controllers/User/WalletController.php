@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Console\Commands\CompleteReceipt;
 use App\Events\Paid;
 use App\Exceptions\ApiException;
 use App\Receipt;
@@ -68,7 +69,7 @@ class WalletController extends Controller
             $receipt->amount = $amount - $promotion;
             $receipt->total = $amount;
             $receipt->reference = 'LOP-' . Carbon::now()->dayOfYear . '-' . rand(1000000, 9999999);
-            $receipt->status = 0; // initiated
+            $receipt->status = Receipt::Initiate;
             $receipt->save();
 
             /** @var WalletService $wallet */
@@ -79,17 +80,11 @@ class WalletController extends Controller
                     'amount' => min(1000, $receipt->amount - $wallet->balance($user))
                 ];
 
-                return redirect(route('v1.user.charge.auto') . '/' . http_build_query($query));
+                return redirect(route('v1.user.charge.auto') . '/?' . http_build_query($query), 301);
             }
 
-            DB::transaction(function () use ($wallet, $user, $vendor, $receipt) {
-                $wallet->debtor($user, $receipt->amount, TransactionTypes::Withdraw, trans('transaction.payment', ['name' => $vendor->name], 'fa'));
-                $wallet->creditor($vendor, $receipt->total, TransactionTypes::Deposit, "Deposit from a Customer");
-                $receipt->status = 1; // done
-                $receipt->save();
-            });
+            $this->dispatch(new CompleteReceipt($receipt, $user, $vendor));
 
-            event(new Paid($user, $vendor, $receipt));
             return response()->json([
                 'status' => 'success'
             ]);

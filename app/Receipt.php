@@ -17,9 +17,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer status
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property-read Vendor vendor
+ * @property-read User user
+ * @property-read Voucher voucher
  */
 class Receipt extends Model
 {
+    const Initiate = 0;
+    const Done = 1;
+
     /**
      * @return string
      */
@@ -29,5 +35,29 @@ class Receipt extends Model
         $eastern_arabic = array('۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹');
 
         return str_replace($western_arabic, $eastern_arabic, number_format($this->{$name}));
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'used_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function vendor()
+    {
+        return $this->belongsTo(Vendor::class, 'vendor_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function voucher()
+    {
+        return $this->belongsTo(Voucher::class, 'voucher_id');
     }
 }

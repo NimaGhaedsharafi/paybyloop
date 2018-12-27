@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Console\Commands\CompleteReceipt;
 use App\Enums\ErrorCode;
 use App\Exceptions\ApiException;
 use App\Payping;
+use App\Receipt;
 use App\Services\Wallet\TransactionTypes;
 use App\Services\Wallet\WalletService;
 use App\User;
@@ -106,7 +108,7 @@ class PaymentController extends Controller
 
         $refId = $request->input('refid');
         $clientRefId = $request->input('clientrefid');
-
+        $receiptRef = $request->input('receipt');
 
         /** @var Payping $payment */
         $payment = Payping::where('reference_id', trim($clientRefId))->latest()->firstOrFail();
@@ -154,6 +156,15 @@ class PaymentController extends Controller
             $wallet = app(WalletService::class);
             $balance = $wallet->creditor($user, $payment->amount, TransactionTypes::IPG, trans('transaction.ipg', [], 'fa'));
             DB::commit();
+
+            if ($receiptRef) {
+                /** @var Receipt $receipt */
+                $receipt = Receipt::where('reference', $receiptRef)->first();
+                if ($receipt->status == Receipt::Initiate) {
+                    $this->dispatch(new CompleteReceipt($receipt, $user, $receipt->vendor));
+                }
+            }
+
 
             return view('payment.success', [
                 'amount' => $payment->getCameraReadyNumber(),

@@ -77,9 +77,7 @@ class WalletTest extends FeatureCase
         $this->json('POST', route('v1.user.wallet.pay'), [
             'vendor_id' => $this->vendor->vendor_id,
             'amount' => 2000
-        ])
-            ->assertStatus(400)
-            ->assertJsonStructure(['code', 'message']);
+        ])->isRedirect();
 
         $this->assertEquals(0, $wallet->balance($this->user));
         $this->assertEquals(0, $wallet->balance($this->vendor));
