@@ -7,6 +7,6 @@
  */
 
 return [
-    'paid' => ':name مبلغ ' . PHP_EOL . ':amount تومان' . PHP_EOL . 'با لوپ پرداخت کرد. ' . PHP_EOL . 'کد پیگیری: :ref',
+    'paid' => ':name مبلغ ' . PHP_EOL . ':amount تومان' . PHP_EOL . 'با لوپ پرداخت کرد. ' . PHP_EOL . 'کد پیگیری: :reference',
     'otp' => 'سلام' . PHP_EOL . 'کد ورود به لوپ: :code'
 ];
