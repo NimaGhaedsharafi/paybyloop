@@ -77,7 +77,7 @@ class WalletController extends Controller
             if ($wallet->balance($user) < $receipt->amount) {
                 $query = [
                     'ref' => $receipt->reference,
-                    'amount' => min(1000, $receipt->amount - $wallet->balance($user))
+                    'amount' => max(1000, $receipt->amount - $wallet->balance($user))
                 ];
 
                 return redirect(route('v1.user.charge.auto') . '/?' . http_build_query($query), 301);
