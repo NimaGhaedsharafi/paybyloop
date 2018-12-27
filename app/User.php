@@ -15,6 +15,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property string $username
  * @property string $cellphone
  * @property string $email
+ * @property bool $is_blocked
  * @property bool $cellphone_verified
  * @property bool $email_verified
  * @property string $remember_token
@@ -112,6 +113,6 @@ class User extends Authenticatable implements Payable, JWTSubject
      */
     public function isBlocked()
     {
-        return false;
+        return !!$this->is_blocked;
     }
 }
