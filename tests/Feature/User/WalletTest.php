@@ -5,6 +5,7 @@ namespace Tests\Feature\User;
 use App\Events\Paid;
 use App\Services\Wallet\TransactionTypes;
 use App\Services\Wallet\WalletService;
+use App\Wallet;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Tests\Feature\FeatureCase;
@@ -200,5 +201,37 @@ class WalletTest extends FeatureCase
         ])->assertForbidden();
 
         $wallet->balance($this->user);
+    }
+
+    /**
+     * @test
+     */
+    public function get_receipt_of_a_payment()
+    {
+        $this->impersonate();
+        $this->createVendor();
+
+        $wallet = new WalletService();
+        $wallet->creditor($this->user, 5000, 1, "");
+
+        $this->json('POST', route('v1.user.wallet.pay'), [
+            'vendor_id' => $this->vendor->vendor_id,
+            'amount' => 2000
+        ])->assertOk();
+
+        /** @var Wallet $lastTransaction */
+        $lastTransaction = Wallet::where('user_id', $this->user->id)->where('user_type', 1)->latest('id')->first();
+
+        $this->json('GET', route('v1.user.wallet.receipt', ['code' => $lastTransaction->reference]))
+            ->assertOk()
+            ->assertJsonStructure([
+                'reference',
+                'vendor',
+                'has_voucher',
+                'saving',
+                'paid',
+                'total',
+                'created_at'
+            ]);
     }
 }

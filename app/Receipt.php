@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer status
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property bool $has_voucher
  * @property-read Vendor vendor
  * @property-read User user
  * @property-read Voucher voucher
@@ -25,6 +26,14 @@ class Receipt extends Model
 {
     const Initiate = 0;
     const Done = 1;
+
+    protected $appends = [
+        'has_voucher'
+    ];
+
+    protected $hidden = [
+        'id', 'user_id', 'vendor_id', 'voucher_id', 'created_at'
+    ];
 
     /**
      * @return string
@@ -59,5 +68,13 @@ class Receipt extends Model
     public function voucher()
     {
         return $this->belongsTo(Voucher::class, 'voucher_id');
+    }
+
+    /**
+     * @return bool
+     */
+    public function getHasVoucherAttribute()
+    {
+        return $this->voucher_id != 0;
     }
 }

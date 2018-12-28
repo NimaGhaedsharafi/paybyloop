@@ -9,7 +9,7 @@ class Vendor extends Model implements Payable
 {
     protected $guarded = [];
     protected $hidden = [
-        'id', 'password', 'created_at', 'updated_at',
+        'id', 'password', 'created_at', 'updated_at', 'owner_name', 'owner_cellphone'
     ];
 
     /**

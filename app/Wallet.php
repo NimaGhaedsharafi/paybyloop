@@ -17,14 +17,18 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $description
  * @property \Carbon\Carbon $updated_at
  * @property \Carbon\Carbon $created_at
+ * @property bool $has_receipt
  * @property-read Receipt $receipt
  */
 class Wallet extends Model
 {
     protected $hidden = [
-        'user_id', 'user_type', 'receipt_id', 'id',
+        'user_id', 'user_type', 'receipt_id', 'id', 'updated_at'
     ];
-    
+
+    protected $appends = [
+        'has_receipt'
+    ];
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -42,5 +46,13 @@ class Wallet extends Model
     public function receipt()
     {
         return $this->belongsTo(Receipt::class, 'receipt_id');
+    }
+
+    /**
+     * @return bool
+     */
+    public function getHasReceiptAttribute()
+    {
+        return $this->receipt_id != 0;
     }
 }

@@ -27,6 +27,7 @@ Route::group(['as' => 'v1.', 'prefix' => 'v1', 'middleware' => 'jwt'], function 
             Route::post('pay', ['as' => 'pay', 'uses' => 'WalletController@pay']);
             Route::post('voucher', ['as' => 'voucher', 'uses' => 'WalletController@voucherCheck']);
             Route::get('balance', ['as' => 'balance', 'uses' => 'WalletController@balance']);
+            Route::get('receipt/{code}', ['as' => 'receipt', 'uses' => 'WalletController@receipt']);
         });
         Route::group(['prefix' => 'promotion', 'as' => 'promotion.'], function () {
             Route::post('gift', ['as' => 'gift', 'uses' => 'PromotionController@gift']);

@@ -135,4 +135,38 @@ class WalletController extends Controller
             'amount' => $amount - $promotion
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @param $code
+     * @return
+     */
+    public function receipt(Request $request, $code)
+    {
+        /** @var User $user */
+        $user = auth()->user();
+
+        $wallet = Wallet::with(['receipt', 'receipt.vendor'])
+            ->where('reference', trim($code))
+            ->where('user_id', $user->id)
+            ->where('user_type', 1)
+            ->first();
+
+        if ($wallet === null) {
+            throw new ApiException(1005, 'Not Found');
+        }
+
+        $receipt = $wallet->receipt;
+        $data = [
+            'vendor' => $receipt->vendor->name,
+            'reference' => $receipt->reference,
+            'has_voucher' => $receipt->has_voucher,
+            'saving' => $receipt->getCameraReadyNumber('saving'),
+            'paid' => $receipt->getCameraReadyNumber('amount'),
+            'total' => $receipt->getCameraReadyNumber('total'),
+            'created_at' => $receipt->updated_at->toDateTimeString()
+        ];
+
+        return response()->json($data);
+    }
 }
