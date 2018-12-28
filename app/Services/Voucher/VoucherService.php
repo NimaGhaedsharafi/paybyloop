@@ -64,7 +64,7 @@ class VoucherService
      * @param $amount
      * @return integer
      */
-    public function isUserEligible(User $user, $code, Vendor $vendor, $amount)
+    public function canUse(User $user, $code, Vendor $vendor, $amount)
     {
         /** @var Voucher $voucher */
         $voucher = Voucher::where('code', $code)->first();

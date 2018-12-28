@@ -71,7 +71,7 @@ class VoucherTest extends TestCase
 
         /** @var VoucherService $service */
         $service = app(VoucherService::class);
-        $result = $service->isUserEligible($user, $voucher->code, $vendor, $amount);
+        $result = $service->canUse($user, $voucher->code, $vendor, $amount);
         $this->assertNotNull($result);
     }
 
@@ -94,7 +94,7 @@ class VoucherTest extends TestCase
 
         /** @var VoucherService $service */
         $service = app(VoucherService::class);
-        $result = $service->isUserEligible($user, $voucher->code, $vendor, $amount);
+        $result = $service->canUse($user, $voucher->code, $vendor, $amount);
         $this->assertEquals($voucher->absolute + $amount * ($voucher->percent / 100), $result);
     }
 
@@ -118,7 +118,7 @@ class VoucherTest extends TestCase
 
         /** @var VoucherService $service */
         $service = app(VoucherService::class);
-        $result = $service->isUserEligible($user, $voucher->code, $vendor, $amount);
+        $result = $service->canUse($user, $voucher->code, $vendor, $amount);
         $this->assertEquals($voucher->cap, $result);
     }
 
@@ -139,7 +139,7 @@ class VoucherTest extends TestCase
 
         /** @var VoucherService $service */
         $service = app(VoucherService::class);
-        $result = $service->isUserEligible($user, $voucher->code, $vendor, $amount);
+        $result = $service->canUse($user, $voucher->code, $vendor, $amount);
         $this->assertEquals($amount, $result);
     }
 
@@ -159,12 +159,12 @@ class VoucherTest extends TestCase
 
         /** @var VoucherService $service */
         $service = app(VoucherService::class);
-        $result = $service->isUserEligible($user, $voucher->code, $vendor, $amount);
+        $result = $service->canUse($user, $voucher->code, $vendor, $amount);
         $this->assertNotNull($result);
 
         $amount = $vendor->min - 1000;
         $this->expectException(AmountIsLessThanMinimumLimit::class);
-        $service->isUserEligible($user, $voucher->code, $vendor, $amount);
+        $service->canUse($user, $voucher->code, $vendor, $amount);
 
     }
 
@@ -184,7 +184,7 @@ class VoucherTest extends TestCase
         /** @var VoucherService $service */
         $service = app(VoucherService::class);
         $this->expectException(VoucherExpired::class);
-        $service->isUserEligible($user, $voucher->code, $vendor, $amount);
+        $service->canUse($user, $voucher->code, $vendor, $amount);
 
     }
     
@@ -201,7 +201,7 @@ class VoucherTest extends TestCase
         /** @var VoucherService $service */
         $service = app(VoucherService::class);
         $this->expectException(InvalidVoucherCode::class);
-        $service->isUserEligible($user, 'random-code', $vendor, 1000);
+        $service->canUse($user, 'random-code', $vendor, 1000);
     }
 
     /**

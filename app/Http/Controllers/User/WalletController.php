@@ -53,7 +53,7 @@ class WalletController extends Controller
             /** @var VoucherService $voucher */
             $voucher = app(VoucherService::class);
             try {
-                $promotion = $voucher->isUserEligible($user, $request->input('voucher_code'), $vendor, $amount);
+                $promotion = $voucher->canUse($user, $request->input('voucher_code'), $vendor, $amount);
                 if ($promotion != 0) {
                     $voucherId = Voucher::select('id')->where('code', $request->input('voucher_code'))->first()->id;
                 }
@@ -126,7 +126,7 @@ class WalletController extends Controller
 
 
         try {
-            $promotion = app(VoucherService::class)->isUserEligible($user, $request->input('voucher_code'), $vendor, $amount);
+            $promotion = app(VoucherService::class)->canUse($user, $request->input('voucher_code'), $vendor, $amount);
         } catch (VoucherException $exception) {
             throw new ApiException(1002, 'voucher can\'t be applied');
         }
