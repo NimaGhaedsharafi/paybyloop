@@ -13,7 +13,9 @@ use App\Services\Voucher\Exceptions\InvalidVoucherCode;
 use App\Services\Voucher\Exceptions\VoucherExpired;
 use App\User;
 use App\Vendor;
+use App\VendorWhitelist;
 use App\Voucher;
+use Illuminate\Support\Collection;
 
 
 /**
@@ -76,6 +78,14 @@ class VoucherService
             throw new AmountIsLessThanMinimumLimit($voucher->min);
         }
 
+        // check for whitelisting
+        $whitelistId = $voucher->id;
+        if ($voucher->whitelist_parent_id != 0) {
+            $whitelistId = $voucher->whitelist_parent_id;
+        }
+
+        $this->isVendorEligible($whitelistId, $vendor);
+
         $result = $voucher->absolute + $amount * ($voucher->percent / 100.0);
 
         if ($voucher->cap != 0) {
@@ -83,5 +93,26 @@ class VoucherService
         }
 
         return min($result, $amount);
+    }
+
+    /**
+     * @param $voucherId
+     * @param Vendor $vendor
+     * @return bool
+     */
+    public function isVendorEligible($voucherId, Vendor $vendor)
+    {
+        /** @var Collection $whitelist */
+        $whitelist = VendorWhitelist::select('vendor_id')->where('voucher_id', $voucherId)->get();
+
+        if ($whitelist->count() == 0) {
+            return true;
+        }
+//        $vendorId = $vendor->id;
+//        return $whitelist->contains(function ($item) use ($vendorId) {
+//            return $item->vendor_id == $vendorId;
+//        });
+        $vendorId = $vendor->id;
+        return $whitelist->contains('vendor_id', $vendorId);
     }
 }
