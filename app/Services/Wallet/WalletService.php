@@ -40,15 +40,17 @@ class WalletService
      * @param int $amount
      * @param $type
      * @param string $description
+     * @param int $receiptId
      * @return int
      */
-    public function creditor(Payable $user, int $amount, $type, string $description)
+    public function creditor(Payable $user, int $amount, $type, string $description, $receiptId = 0)
     {
         $balance = $this->balance($user);
 
         $wallet = new Wallet();
         $wallet->user_id = $user->getId();
         $wallet->user_type = $user->getType();
+        $wallet->receipt_id = $receiptId;
         $wallet->reference = 'LPC-' . Carbon::now()->dayOfYear . '-' . strtoupper(str_random(7));
         $wallet->creditor = $amount;
         $wallet->debtor = 0;
@@ -66,9 +68,10 @@ class WalletService
      * @param int $amount
      * @param $type
      * @param string $description
+     * @param int $receiptId
      * @return int
      */
-    public function debtor(Payable $user, int $amount, $type, string $description)
+    public function debtor(Payable $user, int $amount, $type, string $description, $receiptId = 0)
     {
         $balance = $this->balance($user);
 
@@ -80,6 +83,7 @@ class WalletService
         $wallet = new Wallet();
         $wallet->user_id = $user->getId();
         $wallet->user_type = $user->getType();
+        $wallet->receipt_id = $receiptId;
         $wallet->reference = 'LPD-' . Carbon::now()->dayOfYear . '-' . strtoupper(str_random(7));
         $wallet->creditor = 0;
         $wallet->debtor = $amount;
