@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $user_id
  * @property int $user_type
+ * @property int $receipt_id
  * @property int $balance
  * @property int $type
  * @property int $creditor
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $description
  * @property \Carbon\Carbon $updated_at
  * @property \Carbon\Carbon $created_at
+ * @property-read Receipt $receipt
  */
 class Wallet extends Model
 {
@@ -28,5 +30,13 @@ class Wallet extends Model
             return $this->belongsTo(User::class);
         }
         return $this->belongsTo(Vendor::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function receipt()
+    {
+        return $this->belongsTo(Receipt::class, 'receipt_id');
     }
 }
