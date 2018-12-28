@@ -20,6 +20,7 @@ class CreateGiftsTable extends Migration
             $table->timestamp('expires_in')->useCurrent();
             $table->string('code')->unique();
             $table->integer('max_use_time')->default(1);
+            $table->integer('used')->default(0);
             $table->timestamps();
         });
     }
