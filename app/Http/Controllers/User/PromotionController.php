@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
 use App\Services\Gift\GiftService;
 use App\Services\Wallet\TransactionTypes;
@@ -23,6 +24,10 @@ class PromotionController extends Controller
         $service = app(GiftService::class);
         /** @var Gift $result */
         $voucher = $service->redeem(Auth::user()->id, $request->input('code'));
+
+        if ($voucher === null) {
+            throw new ApiException(1004, trans('voucher.gift.invalid', [], 'fa'));
+        }
 
         /** @var WalletService $walletService */
         $walletService = app(WalletService::class);
