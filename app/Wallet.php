@@ -21,6 +21,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Wallet extends Model
 {
+    protected $hidden = [
+        'user_id', 'user_type', 'receipt_id', 'id',
+    ];
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
