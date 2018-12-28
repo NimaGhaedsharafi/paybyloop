@@ -111,11 +111,7 @@ class VoucherService
         if ($whitelist->count() == 0) {
             return true;
         }
-//        $vendorId = $vendor->id;
-//        return $whitelist->contains(function ($item) use ($vendorId) {
-//            return $item->vendor_id == $vendorId;
-//        });
-        $vendorId = $vendor->id;
-        return $whitelist->contains('vendor_id', $vendorId);
+
+        return $whitelist->contains('vendor_id', $vendor->id);
     }
 }
