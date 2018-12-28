@@ -10,6 +10,7 @@ namespace App\Services\Voucher;
 
 use App\Services\Voucher\Exceptions\AmountIsLessThanMinimumLimit;
 use App\Services\Voucher\Exceptions\InvalidVoucherCode;
+use App\Services\Voucher\Exceptions\VendorException;
 use App\Services\Voucher\Exceptions\VoucherExpired;
 use App\User;
 use App\Vendor;
@@ -84,7 +85,9 @@ class VoucherService
             $whitelistId = $voucher->whitelist_parent_id;
         }
 
-        $this->isVendorEligible($whitelistId, $vendor);
+        if ($this->isVendorEligible($whitelistId, $vendor) == false) {
+            throw new VendorException();
+        }
 
         $result = $voucher->absolute + $amount * ($voucher->percent / 100.0);
 
