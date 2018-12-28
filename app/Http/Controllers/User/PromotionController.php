@@ -27,7 +27,7 @@ class PromotionController extends Controller
         $service = app(GiftService::class);
 
         /** @var User $user */
-        $user = auth()->user;
+        $user = auth()->user();
 
         DB::beginTransaction();
         try {
