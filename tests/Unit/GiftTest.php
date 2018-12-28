@@ -3,6 +3,9 @@
 namespace Tests\Unit;
 
 use App\Services\Gift\Events\GiftUsed;
+use App\Services\Gift\Exceptions\InvalidCode;
+use App\Services\Gift\Exceptions\Overused;
+use App\Services\Gift\Exceptions\Expired;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -37,7 +40,8 @@ class GiftTest extends TestCase
             'title' => $title,
             'expires_in' => $expiresIn,
             'code' => $code,
-            'max_use_time' => $maxUseTime
+            'max_use_time' => $maxUseTime,
+            'used' => 0
         ]);
     }
 
@@ -59,7 +63,12 @@ class GiftTest extends TestCase
         $this->assertDatabaseHas('gift_logs', [
             'user_id' => $userId,
             'code' => $code,
-            'applied_at' => Carbon::now()
+            'applied_at' => Carbon::now(),
+        ]);
+
+        $this->assertDatabaseHas('gifts', [
+            'code' => $code,
+            'used' => 1
         ]);
     }
 
@@ -72,13 +81,76 @@ class GiftTest extends TestCase
         $userId = 1;
         /** @var GiftService $giftService */
         $giftService = new GiftService();
+        $this->expectException(InvalidCode::class);
         $result = $giftService->redeem($userId, $code);
 
-        $this->assertNull($result);
         $this->assertDatabaseHas('gift_logs', [
             'user_id' => $userId,
             'code' => $code,
-            'applied_at' => null
+            'applied_at' => null,
+        ]);
+    }
+
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function redeem_an_overused_gift_fails()
+    {
+        $code = $this->createGift(1000, null, null, null, 1);
+        $userId = 1;
+
+        /** @var GiftService $giftService */
+        $giftService = new GiftService();
+        $result = $giftService->redeem($userId, $code);
+
+        $this->assertNotNull($result);
+        $this->assertDatabaseHas('gift_logs', [
+            'user_id' => $userId,
+            'code' => $code,
+            'applied_at' => Carbon::now(),
+        ]);
+
+        $this->assertDatabaseHas('gifts', [
+            'code' => $code,
+            'used' => 1
+        ]);
+
+
+        $this->expectException(Overused::class);
+        $giftService->redeem($userId, $code);
+        $this->assertDatabaseHas('gift_logs', [
+            'user_id' => $userId,
+            'code' => $code,
+            'applied_at' => null,
+        ]);
+    }
+
+
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function redeem_an_expired_gift_fails()
+    {
+        $code = $this->createGift(1000, null, Carbon::now(), null, 1);
+        $userId = 1;
+
+        /** @var GiftService $giftService */
+        $giftService = new GiftService();
+
+        $this->expectException(Expired::class);
+        $giftService->redeem($userId, $code);
+
+        $this->assertDatabaseHas('gifts', [
+            'code' => $code,
+            'used' => 0
+        ]);
+
+        $this->assertDatabaseHas('gift_logs', [
+            'user_id' => $userId,
+            'code' => $code,
+            'applied_at' => null,
         ]);
     }
 

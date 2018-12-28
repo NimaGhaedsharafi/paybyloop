@@ -12,6 +12,9 @@ namespace App\Services\Gift;
 use App\Services\Gift\Events\GiftUsed;
 use App\Gift;
 use App\GiftLog;
+use App\Services\Gift\Exceptions\Expired;
+use App\Services\Gift\Exceptions\InvalidCode;
+use App\Services\Gift\Exceptions\Overused;
 use Carbon\Carbon;
 
 class GiftService
@@ -34,7 +37,7 @@ class GiftService
     public function redeem($userId, $code)
     {
         /** @var Gift $gift */
-        $gift = Gift::where('code', $code)->first();
+        $gift = Gift::where('code', $code)->lockForUpdate()->first();
         /** @var GiftLog $log */
         $log = new GiftLog();
         $log->gift_id = $gift->id ?? 0;
@@ -44,11 +47,23 @@ class GiftService
         if ($gift === null) {
             $log->applied_at = null;
             $log->save();
-            return null;
+            throw new InvalidCode();
+        }
+
+        if ($gift->isExpired()) {
+            throw new Expired();
+        }
+        if ($gift->isOverused()) {
+            throw new Overused();
         }
 
         $log->applied_at = Carbon::now();
         $log->save();
+
+        // increment usage
+        $gift->used = $gift->used + 1;
+        $gift->save();
+
         event(new GiftUsed($userId, $gift->id));
         return $gift;
     }
