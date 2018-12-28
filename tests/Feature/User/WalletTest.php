@@ -197,7 +197,7 @@ class WalletTest extends FeatureCase
         $this->json('POST', route('v1.user.wallet.pay'), [
             'vendor_id' => $this->vendor->vendor_id,
             'amount' => 2000
-        ])->assertForbidden()->dump();
+        ])->assertForbidden();
 
         $wallet->balance($this->user);
     }
