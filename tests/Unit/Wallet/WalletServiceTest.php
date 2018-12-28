@@ -130,5 +130,30 @@ class WalletServiceTest extends TestCase
         ]);
     }
 
+    /**
+     * @test
+     */
+    public function transaction_can_be_related_to_a_receipt()
+    {
+        /** @var User $user */
+        $user = factory(User::class)->create();
 
+        /** @var WalletService $walletService */
+        $walletService = new WalletService();
+        $walletService->creditor($user, 1000, 1, "", 0);
+        $this->assertEquals(1000, $walletService->balance($user));
+
+        $walletService->debtor($user, 1000, 1, "", 1);
+
+        $this->assertDatabaseHas((new Wallet())->getTable(), [
+            'user_id' => $user->getId(),
+            'user_type' => $user->getType(),
+            'receipt_id' => 1,
+            'type' => 1,
+            'creditor' => 0,
+            'balance' => 0,
+            'debtor' => 1000,
+            'description' => ""
+        ]);
+    }
 }

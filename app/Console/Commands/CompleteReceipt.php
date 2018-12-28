@@ -63,8 +63,8 @@ class CompleteReceipt extends Command
     {
         DB::beginTransaction();
         $wallet = new WalletService();
-        $wallet->debtor($this->user, $this->receipt->amount, TransactionTypes::Withdraw, trans('transaction.payment', ['name' => $this->vendor->name], 'fa'));
-        $wallet->creditor($this->vendor, $this->receipt->total, TransactionTypes::Deposit, "Deposit from a Customer");
+        $wallet->debtor($this->user, $this->receipt->amount, TransactionTypes::Withdraw, trans('transaction.payment', ['name' => $this->vendor->name], 'fa'), $this->receipt->id);
+        $wallet->creditor($this->vendor, $this->receipt->total, TransactionTypes::Deposit, "Deposit from a Customer", $this->receipt->id);
         $this->receipt->status = Receipt::Done;
         $this->receipt->save();
         DB::commit();
