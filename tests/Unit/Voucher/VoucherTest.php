@@ -13,6 +13,7 @@ use App\Services\Voucher\Exceptions\InvalidVoucherCode;
 use App\Services\Voucher\Exceptions\VoucherExpired;
 use App\Services\Voucher\VoucherService;
 use App\User;
+use App\UserWhitelist;
 use App\Vendor;
 use App\VendorWhitelist;
 use App\Voucher;
@@ -256,5 +257,58 @@ class VoucherTest extends TestCase
         /** @var VoucherService $service */
         $service = app(VoucherService::class);
         $this->assertTrue($service->isVendorEligible($voucher->id, $vendor));
+    }
+    /**
+     * @test
+     */
+    public function voucher_eligibility_for_no_whitelisted_user_is_true()
+    {
+        /** @var Voucher $voucher */
+        $voucher = factory(Voucher::class)->create();
+        /** @var User $vendor */
+        $user = factory(User::class)->create();
+
+        /** @var VoucherService $service */
+        $service = app(VoucherService::class);
+        $this->assertTrue($service->isUserEligible($voucher->id, $user));
+    }
+
+    /**
+     * @test
+     */
+    public function voucher_user_eligibility_for_whitelisted_voucher_is_false()
+    {
+        /** @var Voucher $voucher */
+        $voucher = factory(Voucher::class)->create();
+        /** @var User $user */
+        $user = factory(User::class)->create();
+        /** @var VendorWhitelist $voucher */
+        factory(UserWhitelist::class)->create([
+            'voucher_id' => $voucher->id,
+        ]);
+
+        /** @var VoucherService $service */
+        $service = app(VoucherService::class);
+        $this->assertFalse($service->isUserEligible($voucher->id, $user));
+    }
+
+    /**
+     * @test
+     */
+    public function voucher_user_eligibility_for_a_whitelisted_voucher_and_user_is_true()
+    {
+        /** @var Voucher $voucher */
+        $voucher = factory(Voucher::class)->create();
+        /** @var User $user */
+        $user = factory(User::class)->create();
+        /** @var VendorWhitelist $voucher */
+        factory(VendorWhitelist::class)->create([
+            'voucher_id' => $voucher->id,
+            'vendor_id' => $user->id,
+        ]);
+
+        /** @var VoucherService $service */
+        $service = app(VoucherService::class);
+        $this->assertTrue($service->isUserEligible($voucher->id, $user));
     }
 }

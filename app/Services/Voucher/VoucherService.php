@@ -10,9 +10,11 @@ namespace App\Services\Voucher;
 
 use App\Services\Voucher\Exceptions\AmountIsLessThanMinimumLimit;
 use App\Services\Voucher\Exceptions\InvalidVoucherCode;
+use App\Services\Voucher\Exceptions\UserException;
 use App\Services\Voucher\Exceptions\VendorException;
 use App\Services\Voucher\Exceptions\VoucherExpired;
 use App\User;
+use App\UserWhitelist;
 use App\Vendor;
 use App\VendorWhitelist;
 use App\Voucher;
@@ -89,6 +91,10 @@ class VoucherService
             throw new VendorException();
         }
 
+        if ($this->isUserEligible($whitelistId, $user) == false) {
+            throw new UserException();
+        }
+
         $result = $voucher->absolute + $amount * ($voucher->percent / 100.0);
 
         if ($voucher->cap != 0) {
@@ -113,5 +119,22 @@ class VoucherService
         }
 
         return $whitelist->contains('vendor_id', $vendor->id);
+    }
+
+    /**
+     * @param $voucherId
+     * @param User $user
+     * @return bool
+     */
+    public function isUserEligible($voucherId, User $user)
+    {
+        /** @var Collection $whitelist */
+        $whitelist = UserWhitelist::select('user_id')->where('voucher_id', $voucherId)->get();
+
+        if ($whitelist->count() == 0) {
+            return true;
+        }
+
+        return $whitelist->contains('user_id', $user->id);
     }
 }

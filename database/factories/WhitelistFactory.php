@@ -12,3 +12,10 @@ $factory->define(App\VendorWhitelist::class, function () {
         'vendor_id' => 0
     ];
 });
+
+$factory->define(App\UserWhitelist::class, function () {
+    return [
+        'voucher_id' => 0,
+        'user_id' => 0
+    ];
+});
