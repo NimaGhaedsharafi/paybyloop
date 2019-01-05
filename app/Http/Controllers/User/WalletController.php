@@ -72,7 +72,7 @@ class WalletController extends Controller
             $receipt->saving = $promotion;
             $receipt->amount = $amount - $promotion;
             $receipt->total = $amount;
-            $receipt->reference = 'LOP-' . Carbon::now()->dayOfYear . '-' . rand(1000000, 9999999);
+            $receipt->reference = 'LOP-' . str_pad(Carbon::now()->dayOfYear, 3, '0', STR_PAD_LEFT) . '-' . rand(1000000, 9999999);
             $receipt->status = Receipt::Initiate;
             $receipt->save();
 

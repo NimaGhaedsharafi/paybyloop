@@ -51,7 +51,7 @@ class WalletService
         $wallet->user_id = $user->getId();
         $wallet->user_type = $user->getType();
         $wallet->receipt_id = $receiptId;
-        $wallet->reference = 'LPC-' . Carbon::now()->dayOfYear . '-' . strtoupper(str_random(7));
+        $wallet->reference = 'LPC-' . str_pad(Carbon::now()->dayOfYear, 3, '0', STR_PAD_LEFT) . '-' . strtoupper(str_random(7));
         $wallet->creditor = $amount;
         $wallet->debtor = 0;
         $wallet->type = $type;
@@ -84,7 +84,7 @@ class WalletService
         $wallet->user_id = $user->getId();
         $wallet->user_type = $user->getType();
         $wallet->receipt_id = $receiptId;
-        $wallet->reference = 'LPD-' . Carbon::now()->dayOfYear . '-' . strtoupper(str_random(7));
+        $wallet->reference = 'LPD-' . str_pad(Carbon::now()->dayOfYear, 3, '0', STR_PAD_LEFT) . '-' . strtoupper(str_random(7));
         $wallet->creditor = 0;
         $wallet->debtor = $amount;
         $wallet->type = $type;
