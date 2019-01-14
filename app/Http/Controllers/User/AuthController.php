@@ -163,4 +163,24 @@ class AuthController extends Controller
 
         return $this->respondWithToken(auth()->login($user));
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function validateOtp(Request $request)
+    {
+        $this->validate($request, [
+            'code' => 'required|size:5',
+            'cellphone' => 'required',
+        ]);
+
+        $code = Cache::get('otp:' . $request->input('cellphone'), '');
+
+        if ($code != $request->input('code')) {
+            throw new ApiException(ErrorCode::InvalidOTPToken, 'Code is expired or invalid', 403);
+        }
+
+        return response()->json(['status' => 'ok']);
+    }
 }
