@@ -168,7 +168,7 @@ class AuthController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function validateOtp(Request $request)
+    public function otpValidate(Request $request)
     {
         $this->validate($request, [
             'code' => 'required|size:5',
