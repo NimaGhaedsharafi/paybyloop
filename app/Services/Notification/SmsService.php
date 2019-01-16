@@ -50,7 +50,7 @@ class SmsService
         /** @var KavenegarApi $service */
         $service = new KavenegarApi(config('services.kavenegar.key'));
         try {
-            $service->VerifyLookup($recipient, $code, null, null, trans('sms.otp', [], 'fa'));
+            $service->VerifyLookup($recipient, $code, null, null, 'otp');
         } catch (\Exception $exception) {
             Log::error('SMS Service: ' . $exception->getMessage());
         }
