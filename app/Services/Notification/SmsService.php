@@ -35,4 +35,26 @@ class SmsService
 
         return ;
     }
+
+    /**
+     * @param $recipient
+     * @param $code
+     */
+    public function otp($recipient, $code)
+    {
+        if (app()->environment('production') == false) {
+            \Log::info('Pretend OTP SMS: ' . $recipient . ' ' . $code);
+            return ;
+        }
+
+        /** @var KavenegarApi $service */
+        $service = new KavenegarApi(config('services.kavenegar.key'));
+        try {
+            $service->VerifyLookup($recipient, $code, null, null, trans('sms.otp', [], 'fa'));
+        } catch (\Exception $exception) {
+            Log::error('SMS Service: ' . $exception->getMessage());
+        }
+
+        return ;
+    }
 }

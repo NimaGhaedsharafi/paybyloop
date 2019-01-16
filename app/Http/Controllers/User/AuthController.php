@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Enums\ErrorCode;
 use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
+use App\Jobs\AsyncOTPSMS;
 use App\Jobs\AsyncSMS;
 use App\User;
 use Illuminate\Http\Request;
@@ -94,7 +95,7 @@ class AuthController extends Controller
             Cache::put('otp:' . $cellphone, $code, $ttl);
         }
 
-        $this->dispatch(new AsyncSMS($cellphone, trans('sms.otp', ['code' => $code], 'fa')));
+        $this->dispatch(new AsyncOTPSMS($cellphone, $code));
 
 
         return response()->json([
