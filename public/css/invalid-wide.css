@@ -1,0 +1,70 @@
+@import url(fontiran.css);
+html {
+    background-image: linear-gradient(125deg, rgb(18,181,121),rgb(111,211,121));
+    min-height: 100%;
+}
+
+hr {
+    border-bottom-width: 0px;
+    border-top-width: 1pt;
+}
+
+body {
+    margin-left: 15pt;
+    margin-right: 15pt;
+}
+
+#logo {
+    margin-left: auto;
+    margin-right: auto;
+    width: 125pt;
+    display: block;
+    margin-top: 33pt;
+    margin-bottom: 44pt;
+}
+
+#cross {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    padding-top: 5em;
+    width: 68pt;
+}
+
+#box {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 20pt;
+    border-radius: 11pt;
+    max-width: 256pt;
+    min-height: 250pt;
+    background-color: white;
+    box-shadow: 3.4pt 10.5pt 22.4pt 0.2pt rgba(113,124,128,0.34);
+}
+
+#status {
+    font-size: 18px;
+    font-family: IRANSans !important;
+    text-align: center;
+    margin-top: 12pt;
+    background: rgb(206,30,76);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+#footer {
+    color: white;
+    font-size: 13pt;
+    font-weight: 100;
+    letter-spacing: -0.34pt;
+    padding: 30pt;
+    text-align: center;
+    font-family: IRANSans !important;
+}
+
+#footer-caption {
+    font-weight: 400;
+    font-size: 20pt;
+    letter-spacing: -0.45pt;
+}

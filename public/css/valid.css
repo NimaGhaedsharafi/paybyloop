@@ -1,0 +1,103 @@
+@import url(fontiran.css);
+html {
+    background-image: linear-gradient(125deg, rgb(18,181,121),rgb(111,211,121));
+    min-height: 100%;
+}
+
+hr {
+    border-bottom-width: 0px;
+    border-top-width: 1pt;
+}
+
+body {
+    margin-left: 15pt;
+    margin-right: 15pt;
+}
+
+#logo {
+    margin-left: auto;
+    margin-right: auto;
+    width: 260pt;
+    display: block;
+    margin-top: 88pt;
+    margin-bottom: 110pt;
+}
+
+#tick {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 150pt;
+}
+
+#box {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 60pt;
+    border-radius: 31pt;
+    max-width: 625pt;
+    height: auto;
+    background-color: white;
+    box-shadow: 10.4pt 12.5pt 28.4pt 0.2pt rgba(113,124,128,0.34);
+}
+
+
+#status {
+    font-size: 36pt;
+    font-family: IRANSans !important;
+    text-align: center;
+    margin-top: 24pt;
+    background: -webkit-linear-gradient(rgb(18,181,121),rgb(111,211,121));
+    background: -o-linear-gradient(rgb(18,181,121),rgb(111,211,121));
+    background: -moz-linear-gradient(rgb(18,181,121),rgb(111,211,121));
+    background: linear-gradient(rgb(18,181,121),rgb(111,211,121));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#info {
+    font-family: IRANSans !important;
+    direction: rtl;
+    color: rgb(57,62,64);
+    padding: 36pt;
+    padding-bottom: 60pt;
+    height: auto;
+    overflow: hidden;
+    line-height: 58pt;
+    letter-spacing: -0.15pt;
+}
+
+#info-titles {
+    float: right;
+    font-size: 29pt;
+}
+
+#info-datas {
+    float: left;
+    text-align: left;
+    font-size: 29pt;
+}
+
+#info-top {
+    font-weight: 500;
+}
+
+#info-bottom {
+    font-weight: 100;
+}
+
+#footer {
+    color: white;
+    font-size: 30pt;
+    font-weight: 100;
+    letter-spacing: -0.34pt;
+    padding: 74pt;
+    text-align: center;
+    font-family: IRANSans !important;
+}
+
+#footer-caption {
+    font-weight: 400;
+    font-size: 47pt;
+    letter-spacing: -0.45pt;
+}
