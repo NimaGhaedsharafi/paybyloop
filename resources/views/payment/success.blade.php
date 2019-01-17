@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{{ asset('css/success.css') }}">
+    <script type="text/javascript" src="{{ asset('js/redirect.js') }}"></script>
     <title>شارژ موفق</title>
 </head>
 <body>
@@ -23,7 +24,7 @@
         شارژ به کیف پول اضافه شد.
     </div>
     <div id="callToAction">
-        <button class="button" type="button">بازگشت به لوپ</button>
+        <a onclick="redirectToApp()" class="button" type="button">بازگشت به لوپ</a>
     </div>
 </div>
 <div style="flex-grow: 1;"></div>

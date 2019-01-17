@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{{ asset('css/failure.css') }}">
+    <script type="text/javascript" src="{{ asset('js/redirect.js') }}"></script>
 
     <title>تراکنش ناموفق</title>
 </head>
@@ -19,7 +20,7 @@
         متاسفانه عملیات شارژ با خطا مواجه گردید.
     </div>
     <div id="callToAction">
-        <button class="button" type="button">بازگشت به لوپ</button>
+        <a onclick="redirectToApp()" class="button" type="button">بازگشت به لوپ</a>
     </div>
 </div>
 <div style="flex-grow: 1;"></div>
