@@ -14,3 +14,5 @@
 Route::get('/', function () {
     return redirect('https://paybyloop.app');
 });
+
+Route::get('receipt/{receipt}', ['as' => 'receipt.show', 'uses' => 'User\\ReceiptController@show']);
