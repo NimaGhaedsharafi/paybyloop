@@ -22,8 +22,8 @@ class ReceiptController extends Controller
     {
         $transaction = Wallet::with('receipt', 'receipt.vendor')->where('reference', $reference)->first();
 
-        if ($transaction == null) {
-//            return view('receipt.invalid');
+        if ($transaction == null || $transaction->has_receipt == 0) {
+            return view('receipt.invalid');
         }
 
         /** @var Receipt $receipt */
