@@ -19,23 +19,23 @@
             <div style="overflow: hidden">
                 <div id="info-titles">
                     <div id="info-top">نام پذیرنده:</div>
-                    <div id="info-top">مبلغ پرداخت شده:</div>
+                    <div id="info-top">مبلغ کل:</div>
                 </div>
                 <div id="info-datas">
                         <div id="info-top">{{ $vendor }}</div>
-                        <div id="info-top">{{ $amount }} تومان</div>
+                        <div id="info-top">{{ $total }} تومان</div>
                 </div>
             </div>
             <hr style="border-color: rgb(170,185,191);">
             <div style="overflow: hidden">
                 <div id="info-titles">
-                    <div id="info-bottom">مبلغ کل:</div>
+                    <div id="info-bottom">مبلغ پرداخت شده:</div>
                     <div id="info-bottom">تاریخ پرداخت:</div>
                     <div id="info-bottom">زمان پرداخت:</div>
                     <div id="info-bottom">کد رهگیری:</div>
                 </div>
                 <div id="info-datas">
-                    <div id="info-bottom">{{ $total }} تومان</div>
+                    <div id="info-bottom">{{ $amount }} تومان</div>
                     <div id="info-bottom">{{ $date  }}</div>
                     <div id="info-bottom">{{ $time }}</div>
                     <div id="info-bottom">{{ $reference }}</div>
