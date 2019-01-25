@@ -84,7 +84,11 @@ class WalletController extends Controller
                     'amount' => max(1000, $receipt->amount - $wallet->balance($user))
                 ];
 
-                return redirect(route('v1.user.charge.auto') . '/?' . http_build_query($query), 301);
+                // FIXME: totally Anti-pattern
+                $request->json()->add(['ref' => $receipt->reference]);
+                return app(PaymentController::class)->auto($request);
+
+                // return redirect(route('v1.user.charge.auto') . '/?' . http_build_query($query), 301);
             }
 
             $this->dispatch(new CompleteReceipt($receipt, $user, $vendor));
