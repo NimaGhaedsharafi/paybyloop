@@ -17,5 +17,6 @@ $factory->define(App\Vendor::class, function (Faker $faker) {
         'phone' => $faker->phoneNumber,
         'description' => $faker->text,
         'photo' => $faker->imageUrl(),
+        'is_enabled' => 1
     ];
 });

@@ -9,11 +9,11 @@ class VendorController extends Controller
 {
     public function index()
     {
-        return Vendor::all();
+        return Vendor::where('is_enabled', 1)->get();
     }
 
     public function show($vendorId)
     {
-        return Vendor::where('vendor_id', $vendorId)->firstOrFail();
+        return Vendor::where('vendor_id', $vendorId)->where('is_enabled', 1)->firstOrFail();
     }
 }
