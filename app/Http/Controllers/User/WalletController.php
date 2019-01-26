@@ -86,6 +86,7 @@ class WalletController extends Controller
 
                 // FIXME: totally Anti-pattern
                 $request->json()->add(['ref' => $receipt->reference]);
+                $request->json()->set('amount', max(1000, $receipt->amount - $wallet->balance($user)));
                 return app(PaymentController::class)->auto($request);
 
                 // return redirect(route('v1.user.charge.auto') . '/?' . http_build_query($query), 301);
