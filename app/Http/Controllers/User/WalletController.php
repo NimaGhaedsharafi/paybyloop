@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Console\Commands\CompleteReceipt;
+use App\Enums\ErrorCode;
 use App\Events\Paid;
 use App\Exceptions\ApiException;
 use App\Receipt;
@@ -34,6 +35,11 @@ class WalletController extends Controller
             'amount' => 'required|numeric',
             'vendor_id' => 'required'
         ]);
+        
+        $amount = $request->input('amount');
+        if ($amount > config('wallet.limits.max') || $amount < config('wallet.limits.min')) {
+            throw new ApiException(ErrorCode::InvalidAmount, 'amount is not acceptable');
+        }
 
         /** @var User $user */
         $user = Auth::user();
@@ -43,8 +49,6 @@ class WalletController extends Controller
         }
         /** @var Vendor $vendor */
         $vendor = Vendor::where('vendor_id', $request->input('vendor_id'))->firstOrFail();
-
-        $amount = $request->input('amount');
 
         // set a default value for promotion
         $promotion = 0;
