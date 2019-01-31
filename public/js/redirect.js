@@ -15,7 +15,7 @@ function redirectToApp() {
 
     // iOS detection from: http://stackoverflow.com/a/9039885/177710
     if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-        //window.location.href = 'intent:#Intent;scheme=openloop;package=app.paybyloop.loop;end';
+        window.location.href = 'paybyloop://';
         //console.log("iOS");
         return;
     }
