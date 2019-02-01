@@ -4,13 +4,11 @@ namespace App\Http\Controllers\User;
 
 use App\Console\Commands\CompleteReceipt;
 use App\Enums\ErrorCode;
-use App\Events\Paid;
 use App\Exceptions\ApiException;
 use App\Receipt;
 use App\Services\Voucher\Exceptions\VoucherException;
 use App\Services\Voucher\VoucherService;
 use App\Services\Wallet\Exception\InsufficientCredit;
-use App\Services\Wallet\TransactionTypes;
 use App\Services\Wallet\WalletService;
 use App\User;
 use App\Vendor;
@@ -20,13 +18,12 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class WalletController extends Controller
 {
     public function index()
     {
-        return Wallet::where('user_id', Auth::user()->id)->where('user_type', 1)->latest()->get();
+        return Wallet::where('user_id', Auth::user()->id)->where('user_type', 1)->latest('id')->get();
     }
 
     public function pay(Request $request)
