@@ -35,7 +35,7 @@ class WalletController extends Controller
         
         $amount = $request->input('amount');
         if ($amount > config('wallet.limits.max') || $amount < config('wallet.limits.min')) {
-            throw new ApiException(ErrorCode::InvalidAmount, 'amount is not acceptable');
+            throw new ApiException(ErrorCode::InvalidAmount, 'حداقل مبلغ قابل پرداخت ۱۰۰۰ تومان است.');
         }
 
         /** @var User $user */

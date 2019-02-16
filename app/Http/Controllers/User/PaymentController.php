@@ -33,7 +33,7 @@ class PaymentController extends Controller
 
         $amount = $request->input('amount');
         if ($amount > config('payment.limits.max') || $amount < config('payment.limits.min')) {
-            throw new ApiException(ErrorCode::InvalidAmount, 'amount is not acceptable');
+            throw new ApiException(ErrorCode::InvalidAmount, 'حداقل مبلغ قابل پرداخت ۱۰۰۰ تومان است.');
         }
 
         /** @var User $user */
