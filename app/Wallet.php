@@ -27,7 +27,8 @@ class Wallet extends Model
     ];
 
     protected $appends = [
-        'has_receipt'
+        'has_receipt',
+        'receipt_url'
     ];
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -54,5 +55,16 @@ class Wallet extends Model
     public function getHasReceiptAttribute()
     {
         return $this->receipt_id != 0;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getReceiptURLAttribute()
+    {
+        if ($this->receipt_id != 0) {
+            return route('receipt.show', ['receipt' => $this->reference]);
+        }
+        return '';
     }
 }
