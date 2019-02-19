@@ -63,7 +63,7 @@ class Wallet extends Model
     public function getReceiptURLAttribute()
     {
         if ($this->receipt_id != 0) {
-            return route('receipt.show', ['receipt' => $this->reference]);
+            return str_replace('http', 'https', (route('receipt.show', ['receipt' => $this->reference])));
         }
         return '';
     }
