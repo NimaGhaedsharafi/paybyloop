@@ -28,12 +28,12 @@ class SmsListener {
      */
     public function notifyVendor(Paid $paid)
     {
-        $text = trans('sms.paid', [
-            'name' => $paid->getUser()->getName(),
-            'amount' => $paid->getAmount(),
-            'reference' => $paid->getReference()
-        ], 'fa');
+        $data = [
+            $paid->getUser()->getName(),
+            $paid->getAmount(),
+            $paid->getReference()
+        ];
 
-        $this->dispatch(new AsyncSMS($paid->getVendor()->getOwnerPhoneNumber(), $text));
+        $this->dispatch(new AsyncSMS($paid->getVendor()->getOwnerPhoneNumber(), $data, 'paid'));
     }
 }
