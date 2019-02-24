@@ -57,4 +57,27 @@ class SmsService
 
         return ;
     }
+
+    /**
+     * @param $recipient
+     * @param $template
+     * @param $data
+     */
+    public function fast($recipient, $template, $data)
+    {
+        if (app()->environment('production') == false) {
+            \Log::info('Pretend Fast SMS: ' . $recipient . ' ' . $template . ' ' . implode(' ', $data));
+            return ;
+        }
+
+        /** @var KavenegarApi $service */
+        $service = new KavenegarApi(config('services.kavenegar.key'));
+        try {
+            $service->VerifyLookup($recipient, $data[0] ?? null, $data[1] ?? null, $data[2] ?? null, $template);
+        } catch (\Exception $exception) {
+            Log::error('SMS Service: ' . $exception->getMessage());
+        }
+
+        return ;
+    }
 }
