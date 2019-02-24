@@ -15,17 +15,20 @@ class AsyncSMS implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     private $recipients;
     private $text;
+    private $fast;
 
     /**
      * Create a new job instance.
      *
      * @param $recipients
      * @param $text
+     * @param $fast
      */
-    public function __construct($recipients, $text)
+    public function __construct($recipients, $text, $fast = '')
     {
         $this->recipients = $recipients;
         $this->text = $text;
+        $this->fast = $fast;
     }
 
     /**
@@ -36,6 +39,10 @@ class AsyncSMS implements ShouldQueue
     public function handle()
     {
         $service = new SmsService();
+        if ($this->fast != '') {
+            $service->fast($this->recipients, $this->fast, $this->text);
+            return ;
+        }
         $service->send($this->recipients, $this->text);
     }
 }
