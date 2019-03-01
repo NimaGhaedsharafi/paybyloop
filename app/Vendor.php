@@ -5,6 +5,9 @@ namespace App;
 use App\Services\Wallet\Payable;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property VendorStaff[] $staffs
+ */
 class Vendor extends Model implements Payable
 {
     protected $guarded = [];
@@ -34,5 +37,13 @@ class Vendor extends Model implements Payable
     public function getOwnerPhoneNumber()
     {
         return explode(',', $this->owner_cellphone ?? '');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function staffs()
+    {
+        return $this->hasMany(VendorStaff::class, 'vendor_id');
     }
 }
