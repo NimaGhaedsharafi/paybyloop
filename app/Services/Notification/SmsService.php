@@ -73,7 +73,10 @@ class SmsService
         /** @var KavenegarApi $service */
         $service = new KavenegarApi(config('services.kavenegar.key'));
         try {
-            $service->VerifyLookup($recipient, $data[0] ?? null, $data[1] ?? null, $data[2] ?? null, $template);
+            $recipients = is_array($recipient) ? $recipient : [$recipient];
+            foreach ($recipients as $recipient) {
+                $service->VerifyLookup($recipient, $data[0] ?? null, $data[1] ?? null, $data[2] ?? null, $template);
+            }
         } catch (\Exception $exception) {
             Log::error('SMS Service: ' . $exception->getMessage());
         }
