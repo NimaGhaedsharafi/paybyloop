@@ -84,7 +84,7 @@ class Paid
      */
     public function getAmount()
     {
-        return $this->receipt->getCameraReadyNumber('total');
+        return number_format($this->receipt->total);
     }
 
     /**
