@@ -29,7 +29,6 @@ class SmsListener {
     public function notifyVendor(Paid $paid)
     {
         $data = [
-            $paid->getUser()->getName(),
             $paid->getAmount(),
             $paid->getReference()
         ];
